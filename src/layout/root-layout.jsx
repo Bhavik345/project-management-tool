@@ -3,7 +3,6 @@ import { Sidebar } from "../components/sidebar/sidebar";
 
 const RootLayout = () => {
   const isAuthenticated = true;
-
   return (
     <>
       {isAuthenticated ? (

@@ -2,10 +2,10 @@ import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 
 // import component
-import Loader from "./components/loader/loader";
 import AuthLayout from "./layout/auth-layout";
 import RootLayout from "./layout/root-layout";
 import { ToasterProvider } from "./providers/toaster-provider";
+import { Loader } from "./components/loader/loader";
 
 // import pages
 

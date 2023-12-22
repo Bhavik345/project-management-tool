@@ -1,0 +1,184 @@
+import { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { X } from "lucide-react";
+import Modal from "react-modal";
+import { employeeSchema } from "../../validations/employee-validation-schema";
+
+export const AddOrEditEmployeeModal = ({
+  isOpen,
+  onClose,
+  mode,
+  initialData,
+  onSave,
+}) => {
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    formState: { isSubmitting, isValid, errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(employeeSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+    },
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      Object.keys(initialData).forEach((key) => {
+        setValue(key, initialData[key]);
+      });
+    }
+  }, [initialData, setValue]);
+
+  const handleSave = (data) => {
+    onSave(data, mode);
+    closeAddEmployeeModal();
+  };
+  const closeAddEmployeeModal = () => {
+    reset();
+    onClose();
+  };
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={closeAddEmployeeModal}
+      contentLabel={
+        mode === "add" ? "Add Employee Modal" : "Edit Employee Modal"
+      }
+      className="fixed inset-0 overflow-y-auto"
+      shouldCloseOnOverlayClick={false}
+    >
+      <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">
+              {mode === "add" ? "Add Employee" : "Edit Employee "}
+            </h2>
+            <button
+              onClick={closeAddEmployeeModal}
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmit(handleSave)}>
+            <div className="mb-4">
+              <label
+                htmlFor="employeeName"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Employee Name:
+              </label>
+              <Controller
+                name="name"
+                control={control}
+                disabled={isSubmitting}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="text"
+                    id="employeename"
+                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                  />
+                )}
+              />
+              <span className="text-red-500 text-sm">
+                {errors.name?.message}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Employee Email:
+              </label>
+              <Controller
+                name="email"
+                disabled={isSubmitting}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="email"
+                    id="employeeemail"
+                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                  />
+                )}
+              />
+              <span className="text-red-500 text-sm">
+                {errors.email?.message}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="employeenumber"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Employee PhoneNumber :
+              </label>
+              <Controller
+                name="phoneNumber"
+                disabled={isSubmitting}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="tel"
+                    id="employeenumber"
+                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                  />
+                )}
+              />
+              <span className="text-red-500 text-sm">
+                {errors.phoneNumber?.message}
+              </span>
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="employeepassword"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Employee Password :
+              </label>
+              <Controller
+                name="password"
+                disabled={isSubmitting}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="password"
+                    id="employeepassword"
+                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                  />
+                )}
+              />
+              <span className="text-red-500 text-sm">
+                {errors.password?.message}
+              </span>
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
+                  (!isValid || isSubmitting) && "opacity-50 cursor-not-allowed"
+                }`}
+                disabled={!isValid || isSubmitting}
+              >
+                {mode === "add" ? "Add Employee" : "Save Changes"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Modal>
+  );
+};

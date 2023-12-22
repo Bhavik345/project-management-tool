@@ -20,6 +20,7 @@ export const store = configureStore({
       immutableCheck: false,
       serializableCheck: false,
     }),
+    
 });
 
 export const persistor = persistStore(store);
