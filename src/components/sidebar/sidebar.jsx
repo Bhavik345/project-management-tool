@@ -10,6 +10,8 @@ export const Sidebar = () => {
       </div>
       <div className="flex flex-col w-full h-full">
         <SidebarRoutes />
+
+       
       </div>
       <div className="mt-auto p-6 flex items-center cursor-pointer">
         <LogOut className="h-5 w-5 mr-2" />
