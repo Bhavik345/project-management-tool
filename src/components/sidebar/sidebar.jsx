@@ -8,7 +8,7 @@ export const Sidebar = () => {
       <div className="p-6">
         <Logo />
       </div>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full h-full">
         <SidebarRoutes />
       </div>
       <div className="mt-auto p-6 flex items-center cursor-pointer">
