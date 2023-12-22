@@ -79,7 +79,6 @@ export const AddOrEditEmployeeModal = ({
               <Controller
                 name="name"
                 control={control}
-                disabled={isSubmitting}
                 render={({ field }) => (
                   <input
                     {...field}
@@ -102,7 +101,6 @@ export const AddOrEditEmployeeModal = ({
               </label>
               <Controller
                 name="email"
-                disabled={isSubmitting}
                 control={control}
                 render={({ field }) => (
                   <input
@@ -126,7 +124,6 @@ export const AddOrEditEmployeeModal = ({
               </label>
               <Controller
                 name="phoneNumber"
-                disabled={isSubmitting}
                 control={control}
                 render={({ field }) => (
                   <input
@@ -150,7 +147,6 @@ export const AddOrEditEmployeeModal = ({
               </label>
               <Controller
                 name="password"
-                disabled={isSubmitting}
                 control={control}
                 render={({ field }) => (
                   <input

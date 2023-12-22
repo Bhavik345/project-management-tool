@@ -76,7 +76,6 @@ export const AddOrEditProjectModal = ({
               <Controller
                 name="projectName"
                 control={control}
-                disabled={isSubmitting}
                 render={({ field }) => (
                   <input
                     {...field}
@@ -99,7 +98,6 @@ export const AddOrEditProjectModal = ({
               </label>
               <Controller
                 name="clientName"
-                disabled={isSubmitting}
                 control={control}
                 render={({ field }) => (
                   <input
@@ -123,7 +121,6 @@ export const AddOrEditProjectModal = ({
               </label>
               <Controller
                 name="projectDescription"
-                disabled={isSubmitting}
                 control={control}
                 render={({ field }) => (
                   <input
