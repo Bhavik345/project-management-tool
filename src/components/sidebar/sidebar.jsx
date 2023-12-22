@@ -1,5 +1,6 @@
-import { SidebarRoutes } from './sidebar-routes'
-import { Logo } from './logo'
+import { SidebarRoutes } from "./sidebar-routes";
+import { Logo } from "./logo";
+import { LogOut } from "lucide-react";
 
 export const Sidebar = () => {
   return (
@@ -10,6 +11,10 @@ export const Sidebar = () => {
       <div className="flex flex-col w-full">
         <SidebarRoutes />
       </div>
+      <div className="mt-auto p-6 flex items-center cursor-pointer">
+        <LogOut className="h-5 w-5 mr-2" />
+        Logout
+      </div>
     </div>
-  )
-}
+  );
+};
