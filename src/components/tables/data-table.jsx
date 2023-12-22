@@ -116,7 +116,7 @@ export const DataTable = ({ columns, data }) => {
           <select
             value={pageSize}
             onChange={(e) => setPageSize(Number(e.target.value))}
-            className="text-gray-700 border rounded px-2 py-1"
+            className="text-gray-700 border rounded px-2 cursor-pointer py-1"
           >
             {[10, 25, 50].map((pageSizeOption) => (
               <option key={pageSizeOption} value={pageSizeOption}>

@@ -32,6 +32,11 @@ const AdminRoutes = [
 
 const employeeRoutes = [
   {
+    icon: Layout,
+    label: "Dashboard",
+    href: "/",
+  },
+  {
     icon: PointerOffIcon,
     label: "Profile",
     href: "/profile",
@@ -40,12 +45,14 @@ const employeeRoutes = [
 export const SidebarRoutes = () => {
   // const pathname = useLocation();
 
+  const role = "admin";
+  const AccessRoute = role === "admin" ? AdminRoutes : employeeRoutes;
   // const isAdminPage = pathname?.includes("/admin");
 
   // const routes = isAdminPage ? AdminRoutes : employeeRoutes;
   return (
     <div className="flex flex-col w-full">
-      {AdminRoutes.map((route) => (
+      {AccessRoute.map((route) => (
         <SidebarItem
           key={route.href}
           icon={route.icon}

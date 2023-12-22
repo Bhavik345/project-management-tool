@@ -10,9 +10,7 @@ import { Loader } from "./components/loader/loader";
 // import pages
 
 const LoginPage = lazy(() => import("./pages/common/login/login-page"));
-const DashboardPage = lazy(() =>
-  import("./pages/admin-access/dashboard/dashboard-page")
-);
+const DashboardPage = lazy(() => import("./pages/common/dashboard/dashboard"));
 const EmployeePage = lazy(() =>
   import("./pages/admin-access/employee/employee-page")
 );
@@ -22,6 +20,12 @@ const ProjectPage = lazy(() =>
 const ReSourceManageMentPage = lazy(() =>
   import("./pages/admin-access/resource/resource-management-page")
 );
+// profile page
+const ProfilePage = lazy(() =>
+  import("./pages/employee-access/profile/profile-page")
+);
+const NotFound = lazy(() => import("./pages/common/not-found/not-found"));
+
 function App() {
   return (
     <>
@@ -42,7 +46,10 @@ function App() {
                 path="/admin/resource-management"
                 element={<ReSourceManageMentPage />}
               />
+              {/* employee routes */}
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>
