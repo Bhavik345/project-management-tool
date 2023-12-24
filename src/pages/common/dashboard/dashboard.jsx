@@ -1,24 +1,31 @@
 import { lazy } from "react";
 
-const getDashboardComponent = (userRole) => {
-  switch (userRole) {
-    case "admin":
-      return import("../../admin-access/admin-dashboard/admin-dashboard-page");
-    case "employee":
-      return import("../../employee-access/employee-dashboard/employee-dashboard");
-    default:
-      // You can provide a default component or handle other cases as needed
-      return null;
-  }
-};
+const AdminDashboard = lazy(() =>
+  import("../../admin-access/admin-dashboard/admin-dashboard-page")
+);
+const EmployeeDashboard = lazy(() =>
+  import("../../employee-access/employee-dashboard/employee-dashboard")
+);
 
 const DashboardPage = () => {
   const userRole = "admin";
-  const DashboardComponent = lazy(() => getDashboardComponent(userRole));
+  let DashboardComponent;
+
+  switch (userRole) {
+    case "admin":
+      DashboardComponent = AdminDashboard;
+      break;
+    case "employee":
+      DashboardComponent = EmployeeDashboard;
+      break;
+    default:
+      // You can provide a default component or handle other cases as needed
+      DashboardComponent = null;
+  }
 
   return (
     <div>
-      <DashboardComponent />
+      {DashboardComponent && <DashboardComponent />}
     </div>
   );
 };
