@@ -1,13 +1,19 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import authReducer from "./src/modules/auth/auth-slice";
 import projectReducer from "./src/modules/projects/project-slice";
-import employeeRducer from "./src/modules/employee/employee-slice";
-const rootReducer = combineReducers({
+import employeeReducer from "./src/modules/employee/employee-slice";
+
+const appReducer = combineReducers({
   auth: authReducer,
   project: projectReducer,
-  employee: employeeRducer,
+  employee: employeeReducer,
 });
 
-
+const rootReducer = (state, action) => {
+  if (action.type === "RESET_STATE_ACTION_TYPE") {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
 
 export default rootReducer;
