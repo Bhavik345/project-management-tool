@@ -10,7 +10,7 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (action.type === "RESET_STATE_ACTION_TYPE") {
+  if (action.type === "auth/logout") {
     state = undefined;
   }
   return appReducer(state, action);
