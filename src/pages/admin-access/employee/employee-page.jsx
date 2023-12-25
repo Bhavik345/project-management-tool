@@ -68,13 +68,13 @@ const EmployeePage = () => {
         name: "Project 1",
         email: "imyours@gmail.com",
         password: "password",
-        phonenumber: "+91 3456345435345",
+        phoneNumber: "+91 3456345435345",
       },
       {
         id: 2,
         name: "Project 1",
         email: "imyours@gmail.com",
-        phonenumber: "+91 3456345435345",
+        phoneNumber: "+91 3456345435345",
         password: "password",
       },
       {
@@ -82,7 +82,7 @@ const EmployeePage = () => {
         name: "Project 1",
         email: "imyours@gmail.com",
         password: "password",
-        phonenumber: "+91 3456345435345",
+        phoneNumber: "3456345435",
       },
 
       // Add more rows as needed
@@ -96,7 +96,7 @@ const EmployeePage = () => {
       // { Header: "ID", accessor: "id" },
       { Header: "Name", accessor: "name" },
       { Header: "Email", accessor: "email" },
-      { Header: "Phonenumber", accessor: "phonenumber" },
+      { Header: "Phone Number", accessor: "phoneNumber" },
       { Header: "Password", accessor: "password" },
 
       {

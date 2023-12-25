@@ -1,13 +1,16 @@
+import { useSelector } from "react-redux";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/sidebar/sidebar";
+import { adminRoutes, employeeRoutes } from "../utils/route-access";
 
 const RootLayout = () => {
   const location = useLocation();
-  const isAuthenticated = true;
+  const isAuthenticated = false;
+  // const { isAuthenticated } = useSelector((state) =>state?.root?.auth);
+
   const userRole = "admin"; // Set the user role based on your authentication logic
 
-  const adminRoutes = ["/admin/projects", "/admin/employee", "/admin/resource-management"];
-  const employeeRoutes = ["/profile"];
+
 
   // Check if the user is not authenticated
   if (!isAuthenticated) {

@@ -1,10 +1,10 @@
 import { lazy } from "react";
 
-const AdminDashboard = lazy(() =>
+const AdminDashboardPage = lazy(() =>
   import("../../admin-access/admin-dashboard/admin-dashboard-page")
 );
-const EmployeeDashboard = lazy(() =>
-  import("../../employee-access/employee-dashboard/employee-dashboard")
+const EmployeeDashboardPage = lazy(() =>
+  import("../../employee-access/employee-dashboard/employee-dashboard-page")
 );
 
 const DashboardPage = () => {
@@ -13,10 +13,10 @@ const DashboardPage = () => {
 
   switch (userRole) {
     case "admin":
-      DashboardComponent = AdminDashboard;
+      DashboardComponent = AdminDashboardPage;
       break;
     case "employee":
-      DashboardComponent = EmployeeDashboard;
+      DashboardComponent = EmployeeDashboardPage;
       break;
     default:
       // You can provide a default component or handle other cases as needed

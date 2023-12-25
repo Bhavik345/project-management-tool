@@ -1,4 +1,4 @@
-const EmployeeDashboard = () => {
+const EmployeeDashboardPage = () => {
     return (
       <div>
         <h2>Welcome to Employee Dashboard</h2>
@@ -7,4 +7,4 @@ const EmployeeDashboard = () => {
     );
   };
 
-  export default EmployeeDashboard
+  export default EmployeeDashboardPage

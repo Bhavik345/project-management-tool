@@ -1,20 +1,19 @@
+import { useSelector } from "react-redux";
 import { Outlet, Navigate } from "react-router-dom";
 
 export default function AuthLayout() {
-  //   const { isAuthenticated } = useUserContext();
-  const isAuthenticated =true;
+  // const { isAuthenticated } = useSelector((state) =>state?.root?.auth);
+  const isAuthenticated = false;
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
-      {isAuthenticated ? (
-        <Navigate to="/" />
-      ) : (
-        <>
-          <section>  
-            <Outlet />
-          </section>
-        </>
-      )}
+      <section>
+        <Outlet />
+      </section>
     </>
   );
 }

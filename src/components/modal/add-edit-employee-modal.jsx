@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { X } from "lucide-react";
+import { Eye, EyeOff, X } from "lucide-react";
 import Modal from "react-modal";
 import { employeeSchema } from "../../validations/employee-validation-schema";
 
@@ -12,6 +12,8 @@ export const AddOrEditEmployeeModal = ({
   initialData,
   onSave,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     handleSubmit,
     control,
@@ -36,6 +38,7 @@ export const AddOrEditEmployeeModal = ({
     }
   }, [initialData, setValue]);
 
+
   const handleSave = (data) => {
     onSave(data, mode);
     closeAddEmployeeModal();
@@ -43,6 +46,9 @@ export const AddOrEditEmployeeModal = ({
   const closeAddEmployeeModal = () => {
     reset();
     onClose();
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -85,6 +91,7 @@ export const AddOrEditEmployeeModal = ({
                     type="text"
                     id="employeename"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />
@@ -108,6 +115,7 @@ export const AddOrEditEmployeeModal = ({
                     type="email"
                     id="employeeemail"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />
@@ -131,6 +139,7 @@ export const AddOrEditEmployeeModal = ({
                     type="tel"
                     id="employeenumber"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />
@@ -138,25 +147,40 @@ export const AddOrEditEmployeeModal = ({
                 {errors.phoneNumber?.message}
               </span>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label
                 htmlFor="employeepassword"
                 className="block text-sm font-medium text-gray-600"
               >
                 Employee Password :
               </label>
-              <Controller
-                name="password"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    {...field}
-                    type="password"
-                    id="employeepassword"
-                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                  />
-                )}
-              />
+              <div className="relative">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      type={showPassword ? "text" : "password"}
+                      id="employeepassword"
+                      className="mt-1 p-2 border border-gray-300 w-full rounded-md pr-10"
+                      disabled={isSubmitting}
+                    />
+                  )}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-2 mr-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
+                </button>
+              </div>
+
               <span className="text-red-500 text-sm">
                 {errors.password?.message}
               </span>
