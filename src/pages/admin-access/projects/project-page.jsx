@@ -122,7 +122,8 @@ const ProjectPage = () => {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Projects</h1>
         <button
-          className="bg-black text-white px-3 py-2 rounded flex items-center  mr-3"
+          className="bg-black text-white px-3 py-2 rounded-md flex items-center  mr-3
+          "
           onClick={openAddProjectModal}
         >
           <Plus className="w-5 h-5 mr-3 " />
