@@ -8,6 +8,8 @@ const EmployeeDashboardPage = lazy(() =>
 );
 
 const DashboardPage = () => {
+  // const { user } = useSelector((state) =>state?.root?.auth);
+
   const userRole = "admin";
   let DashboardComponent;
 
@@ -23,11 +25,7 @@ const DashboardPage = () => {
       DashboardComponent = null;
   }
 
-  return (
-    <div>
-      {DashboardComponent && <DashboardComponent />}
-    </div>
-  );
+  return <div>{DashboardComponent && <DashboardComponent />}</div>;
 };
 
 export default DashboardPage;

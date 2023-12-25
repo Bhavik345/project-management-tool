@@ -3,7 +3,7 @@ import { Outlet, Navigate } from "react-router-dom";
 
 export default function AuthLayout() {
   // const { isAuthenticated } = useSelector((state) =>state?.root?.auth);
-  const isAuthenticated = false;
+  const isAuthenticated = true;
 
   if (isAuthenticated) {
     return <Navigate to="/" />;

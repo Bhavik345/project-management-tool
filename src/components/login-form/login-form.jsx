@@ -3,9 +3,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { authSchema } from "../../validations/auth-validation-schema";
+import { useDispatch } from "react-redux";
+import { LoginAPI } from "../../modules/auth/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -21,12 +26,9 @@ export const LoginForm = () => {
   });
 
   const handleSave = async (data) => {
-    console.log(data, 22);
-    try {
-      reset();
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(LoginAPI(data));
+    reset();
+    navigate("/");
   };
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);

@@ -44,6 +44,8 @@ const employeeRoutes = [
 ];
 export const SidebarRoutes = () => {
   // const pathname = useLocation();
+  // const { user } = useSelector((state) =>state?.root?.auth);
+
 
   const role = "admin";
   const AccessRoute = role === "admin" ? AdminRoutes : employeeRoutes;

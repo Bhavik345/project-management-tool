@@ -5,8 +5,8 @@ import { adminRoutes, employeeRoutes } from "../utils/route-access";
 
 const RootLayout = () => {
   const location = useLocation();
-  const isAuthenticated = false;
-  // const { isAuthenticated } = useSelector((state) =>state?.root?.auth);
+  const isAuthenticated = true;
+  // const { isAuthenticated,user } = useSelector((state) =>state?.root?.auth);
 
   const userRole = "admin"; // Set the user role based on your authentication logic
 

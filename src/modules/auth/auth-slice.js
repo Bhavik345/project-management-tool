@@ -1,12 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { ErrorToast, SuccessToast } from "../../utils/toast-util";
 
 const initialState = {
   isAuthenticated: false,
   user: {},
-  // isopen: false,
-  // modalMode: "add",
+  loading: false,
 };
 
+export const LoginAPI = (data) => async (dispatch) => {
+  try {
+    dispatch(toggleLoading(true));
+    const response = await axios.post(
+      `${import.meta.env.VITE_REACT_API_KEY}/login`,
+      data
+    );
+    if (response.status === 201) {
+      SuccessToast(response.data.message);
+      dispatch(login(data));
+    } else {
+      ErrorToast(response.data.message);
+    }
+  } catch (error) {
+    ErrorToast(error?.message);
+  } finally {
+    dispatch(toggleLoading(false));
+  }
+};
 export const authSlice = createSlice({
   initialState: initialState,
   name: "auth",
@@ -19,19 +39,12 @@ export const authSlice = createSlice({
       state.isAuthenticated = false;
       state.user = {};
     },
-    // setIsOpen: (state, action) => {
-    //   state.isopen = action.payload;
-    // },
-    // setIsClosed: (state, action) => {
-    //   state.isopen = action.payload;
-    // },
-    // setModalMode: (state, action) => {
-    //   state.modalMode = action.payload;
-    // },
+    toggleLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 });
 
-export const { login, logout } =
-  authSlice.actions;
+export const { login, logout, toggleLoading } = authSlice.actions;
 
 export default authSlice.reducer;
