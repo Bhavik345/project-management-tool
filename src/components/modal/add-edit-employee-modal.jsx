@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff, X } from "lucide-react";
 import Modal from "react-modal";
 import { employeeSchema } from "../../validations/employee-validation-schema";
+import { useSelector } from "react-redux";
+import { isEmptyObject } from "../../utils/isemptyobj";
 
 export const AddOrEditEmployeeModal = ({
   isOpen,
@@ -17,7 +19,6 @@ export const AddOrEditEmployeeModal = ({
   const {
     handleSubmit,
     control,
-    setValue,
     formState: { isSubmitting, isValid, errors },
     reset,
   } = useForm({
@@ -29,18 +30,28 @@ export const AddOrEditEmployeeModal = ({
       phoneNumber: "",
     },
   });
+  const { loademployeedetails } = useSelector((state) => state?.root?.employee);
 
   useEffect(() => {
-    if (initialData) {
-      Object.keys(initialData).forEach((key) => {
-        setValue(key, initialData[key]);
+    if (!isEmptyObject(loademployeedetails) && mode === "edit") {
+      const { password, name, email, phoneNumber } = loademployeedetails;
+      reset({
+        password: password,
+        phoneNumber: phoneNumber,
+        name: name,
+        email: email,
+      });
+    } else {
+      reset({
+        password: "",
+        phoneNumber: "",
+        name: "",
+        email: "",
       });
     }
-  }, [initialData, setValue]);
-
-
+  }, [loademployeedetails, reset, mode]);
   const handleSave = (data) => {
-    onSave(data, mode);
+    onSave(data);
     closeAddEmployeeModal();
   };
   const closeAddEmployeeModal = () => {
@@ -147,44 +158,48 @@ export const AddOrEditEmployeeModal = ({
                 {errors.phoneNumber?.message}
               </span>
             </div>
-            <div className="mb-4 relative">
-              <label
-                htmlFor="employeepassword"
-                className="block text-sm font-medium text-gray-600"
-              >
-                Employee Password :
-              </label>
-              <div className="relative">
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      type={showPassword ? "text" : "password"}
-                      id="employeepassword"
-                      className="mt-1 p-2 border border-gray-300 w-full rounded-md pr-10"
-                      disabled={isSubmitting}
-                    />
-                  )}
-                />
-                <button
-                  type="button"
-                  onClick={togglePasswordVisibility}
-                  className="absolute right-2 mr-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
 
-              <span className="text-red-500 text-sm">
-                {errors.password?.message}
-              </span>
-            </div>
+            {mode === "add" && (
+              <div className="mb-4 relative">
+                <label
+                  htmlFor="employeepassword"
+                  className="block text-sm font-medium text-gray-600"
+                >
+                  Employee Password :
+                </label>
+                <div className="relative">
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type={showPassword ? "text" : "password"}
+                        id="employeepassword"
+                        className="mt-1 p-2 border border-gray-300 w-full rounded-md pr-10"
+                        disabled={isSubmitting}
+                      />
+                    )}
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-2 mr-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+
+                <span className="text-red-500 text-sm">
+                  {errors.password?.message}
+                </span>
+              </div>
+            )}
+
             <div className="flex justify-end">
               <button
                 type="submit"

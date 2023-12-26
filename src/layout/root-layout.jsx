@@ -5,11 +5,9 @@ import { adminRoutes, employeeRoutes } from "../utils/route-access";
 
 const RootLayout = () => {
   const location = useLocation();
-  const isAuthenticated = true;
-  // const { isAuthenticated,user } = useSelector((state) =>state?.root?.auth);
+  const { isAuthenticated,user } = useSelector((state) =>state?.root?.auth);
 
-  const userRole = "admin"; // Set the user role based on your authentication logic
-
+  const userRole = user && user?.role ;
 
 
   // Check if the user is not authenticated
@@ -20,7 +18,7 @@ const RootLayout = () => {
   // Check if the user is trying to access an unauthorized route
   const isUnauthorizedRoute = (
     (userRole === "employee" && adminRoutes.includes(location.pathname)) ||
-    (userRole === "admin" && employeeRoutes.includes(location.pathname))
+    (userRole === "ADMIN" && employeeRoutes.includes(location.pathname))
   );
 
   // Redirect to the appropriate route based on the user's role

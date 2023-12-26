@@ -1,4 +1,5 @@
 import { lazy } from "react";
+import { useSelector } from "react-redux";
 
 const AdminDashboardPage = lazy(() =>
   import("../../admin-access/admin-dashboard/admin-dashboard-page")
@@ -8,13 +9,13 @@ const EmployeeDashboardPage = lazy(() =>
 );
 
 const DashboardPage = () => {
-  // const { user } = useSelector((state) =>state?.root?.auth);
+  const { user } = useSelector((state) => state?.root?.auth);
+  const userRole = user && user?.role;
 
-  const userRole = "admin";
   let DashboardComponent;
 
   switch (userRole) {
-    case "admin":
+    case "ADMIN":
       DashboardComponent = AdminDashboardPage;
       break;
     case "employee":

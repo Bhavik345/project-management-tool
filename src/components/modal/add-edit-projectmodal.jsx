@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { X } from "lucide-react";
 import Modal from "react-modal";
 import { projectSchema } from "../../validations/project-validation-schema";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoadProjectData } from "../../modules/projects/project-slice";
+import { isEmptyObject } from "../../utils/isemptyobj";
 
 export const AddOrEditProjectModal = ({
   isOpen,
@@ -12,10 +15,10 @@ export const AddOrEditProjectModal = ({
   initialData,
   onSave,
 }) => {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     control,
-    setValue,
     formState: { isSubmitting, isValid, errors },
     reset,
   } = useForm({
@@ -26,22 +29,35 @@ export const AddOrEditProjectModal = ({
       clientName: "",
     },
   });
+  const { loadprojectdata } = useSelector((state) => state?.root?.project);
+
+  
 
   useEffect(() => {
-    if (initialData) {
-      Object.keys(initialData).forEach((key) => {
-        setValue(key, initialData[key]);
+    if (!isEmptyObject(loadprojectdata) && mode === "edit") {
+      const { project_description, project_name, client_name } =
+        loadprojectdata;
+      reset({
+        projectDescription: project_description || "",
+        projectName: project_name || "",
+        clientName: client_name || "",
+      });
+    } else {
+      reset({
+        projectDescription: "",
+        projectName: "",
+        clientName: "",
       });
     }
-  }, [initialData, setValue]);
-
+  }, [loadprojectdata, reset, mode]);
   const handleSave = (data) => {
-    onSave(data, mode);
+    onSave(data);
     closeAddProjectModal();
   };
   const closeAddProjectModal = () => {
     reset();
     onClose();
+    dispatch(setLoadProjectData({}));
   };
 
   return (
@@ -82,6 +98,7 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="projectName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />
@@ -105,6 +122,7 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="clientName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />
@@ -128,6 +146,7 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="projectDescription"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
                   />
                 )}
               />

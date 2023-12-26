@@ -12,17 +12,19 @@ export const LoginAPI = (data) => async (dispatch) => {
   try {
     dispatch(toggleLoading(true));
     const response = await axios.post(
-      `${import.meta.env.VITE_REACT_API_KEY}/login`,
+      `${import.meta.env.VITE_REACT_API_KEY}auth/login`,
       data
     );
-    if (response.status === 201) {
+    if (response.status === 200) {
+      localStorage.setItem('token',response?.data?.data?.token);
+      dispatch(login(response?.data?.data));
+
       SuccessToast(response.data.message);
-      dispatch(login(data));
     } else {
       ErrorToast(response.data.message);
     }
   } catch (error) {
-    ErrorToast(error?.message);
+    ErrorToast(error?.response?.data?.message);
   } finally {
     dispatch(toggleLoading(false));
   }

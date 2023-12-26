@@ -6,6 +6,7 @@ import {
   ProjectorIcon,
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
+import { useSelector } from "react-redux";
 
 const AdminRoutes = [
   {
@@ -43,15 +44,10 @@ const employeeRoutes = [
   },
 ];
 export const SidebarRoutes = () => {
-  // const pathname = useLocation();
-  // const { user } = useSelector((state) =>state?.root?.auth);
+  const { user } = useSelector((state) => state?.root?.auth);
+  const userRole = user && user?.role;
 
-
-  const role = "admin";
-  const AccessRoute = role === "admin" ? AdminRoutes : employeeRoutes;
-  // const isAdminPage = pathname?.includes("/admin");
-
-  // const routes = isAdminPage ? AdminRoutes : employeeRoutes;
+  const AccessRoute = userRole === "ADMIN" ? AdminRoutes : employeeRoutes;
   return (
     <div className="flex flex-col w-full">
       {AccessRoute.map((route) => (
