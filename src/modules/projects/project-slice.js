@@ -51,7 +51,10 @@ export const abortGetAllProjects = () => (dispatch, getState) => {
 // create a new project
 export const AddProject = (data) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(toggleLoading({
+      loading: true,
+      abortController: controller,
+    }));
     const response = await authApi.post(`project`, data);
     if (response.status === 201) {
       dispatch(getAllProjects());
@@ -64,14 +67,20 @@ export const AddProject = (data) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(toggleLoading({
+      loading: false,
+      abortController: controller,
+    }));
   }
 };
 
 // update existing project
 export const UpdateProject = (data, projectId) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(toggleLoading({
+      loading: true,
+      abortController: controller,
+    }));
     const response = await authApi.patch(`project/${projectId}`, data);
     if (response.status === 200) {
       SuccessToast(response.data?.message);
@@ -82,14 +91,20 @@ export const UpdateProject = (data, projectId) => async (dispatch) => {
 
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(toggleLoading({
+      loading: false,
+      abortController: controller,
+    }));
   }
 };
 
 // delete existing project
 export const DeleteProject = (projectId) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(toggleLoading({
+      loading: true,
+      abortController: controller,
+    }));
     const response = await authApi.delete(`project/${projectId}`);
     if (response.status === 200) {
       SuccessToast(response?.data?.message);
@@ -99,14 +114,20 @@ export const DeleteProject = (projectId) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(toggleLoading({
+      loading: false,
+      abortController: controller,
+    }));
   }
 };
 
 // load single project
 export const LoadSingleProject = (projectId) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(toggleLoading({
+      loading: true,
+      abortController: controller,
+    }));
     const response = await authApi.get(`project/${projectId}`);
     if (response.status === 200) {
       dispatch(setLoadProjectData(response.data?.data));
@@ -118,7 +139,10 @@ export const LoadSingleProject = (projectId) => async (dispatch) => {
 
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(toggleLoading({
+      loading: false,
+      abortController: controller,
+    }));
   }
 };
 

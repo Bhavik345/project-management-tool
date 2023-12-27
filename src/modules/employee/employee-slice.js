@@ -49,7 +49,12 @@ export const abortGetAllEmployees = () => (dispatch, getState) => {
 // create a new employee
 export const AddNewEmployee = (data) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(
+      toggleLoading({
+        loading: true,
+        abortController: controller,
+      })
+    );
     const response = await authApi.post(`employee`, data);
     if (response.status === 201) {
       SuccessToast(response.data?.message);
@@ -59,14 +64,24 @@ export const AddNewEmployee = (data) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: controller,
+      })
+    );
   }
 };
 
 // update existing employee
 export const UpdateEmployee = (data, employeeID) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(
+      toggleLoading({
+        loading: true,
+        abortController: controller,
+      })
+    );
     const response = await authApi.patch(
       `${import.meta.env.VITE_REACT_API_KEY}employee/${employeeID}`,
       data
@@ -81,14 +96,24 @@ export const UpdateEmployee = (data, employeeID) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: controller,
+      })
+    );
   }
 };
 
 // delete existing employee
 export const DeleteEmployee = (employeeID) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(
+      toggleLoading({
+        loading: true,
+        abortController: controller,
+      })
+    );
     const response = await authApi.delete(`employee/${employeeID}`);
     if (response.status === 200) {
       SuccessToast(response.data.message);
@@ -98,14 +123,24 @@ export const DeleteEmployee = (employeeID) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: controller,
+      })
+    );
   }
 };
 
 // load employee details
 export const LoadSingleEmployee = (employeeID) => async (dispatch) => {
   try {
-    dispatch(toggleLoading(true));
+    dispatch(
+      toggleLoading({
+        loading: true,
+        abortController: controller,
+      })
+    );
     const response = await authApi.get(`employee/${employeeID}`);
     if (response.status === 200) {
       dispatch(setLoadEmployeeDetails(response?.data?.data));
@@ -116,7 +151,12 @@ export const LoadSingleEmployee = (employeeID) => async (dispatch) => {
     ErrorToast(error?.response?.data?.message);
     dispatch(setError(error?.message));
   } finally {
-    dispatch(toggleLoading(false));
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: controller,
+      })
+    );
   }
 };
 export const employeeSlice = createSlice({

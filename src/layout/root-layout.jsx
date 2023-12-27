@@ -32,7 +32,7 @@ const RootLayout = () => {
         <Sidebar />
       </div>
 
-      <section className="pl-60 pt-[20px]">
+      <section className="md:pl-60 pt-[20px] h-full">
         <Outlet />
       </section>
     </>
