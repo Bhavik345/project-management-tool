@@ -7,6 +7,7 @@ import { abortGetAllProjects, getAllProjects } from "../../../modules/projects/p
 
 export default function ReSourceManageMentPage() {
   const { loading, projects } = useSelector((state) => state?.root?.project);
+  const {loading:resourceLoading}  = useSelector((state) => state?.root?.resource)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function ReSourceManageMentPage() {
 console.log('projid',projectId);
   return (
     <>
-      {loading ? (
+      {loading || resourceLoading ? (
         <Loader />
       ) : (
         <>
