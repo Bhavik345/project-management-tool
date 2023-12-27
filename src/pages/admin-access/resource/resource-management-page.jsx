@@ -8,6 +8,7 @@ import { getAllEmployees } from "../../../modules/employee/employee-slice";
 
 export default function ReSourceManageMentPage() {
   const { loading, projects } = useSelector((state) => state?.root?.project);
+  const {loading:resourceLoading}  = useSelector((state) => state?.root?.resource)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function ReSourceManageMentPage() {
   };
   return (
     <>
-      {loading ? (
+      {loading || resourceLoading ? (
         <Loader />
       ) : (
         <>

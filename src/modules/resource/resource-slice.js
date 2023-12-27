@@ -40,7 +40,12 @@ const initialState = {
 
   export const AddResource = (data) => async (dispatch) => {
     try {
-      dispatch(toggleLoading(true));
+      dispatch(
+        toggleLoading({
+          loading: true,
+          abortController: controller,
+        })
+      );
       const response = await authApi.post(`resource/assign`, data);
       if (response.status === 201) {
         dispatch(getAllResources());
@@ -53,7 +58,12 @@ const initialState = {
       ErrorToast(error?.response?.data?.message);
       dispatch(setError(error?.message));
     } finally {
-      dispatch(toggleLoading(false));
+      dispatch(
+        toggleLoading({
+          loading: false,
+          abortController: controller,
+        })
+      );
     }
   };
 
@@ -63,7 +73,7 @@ const initialState = {
     name: "Resources",
     reducers: {
       setResources: (state, action) => {
-        state.Resources = action.payload;
+        state.resources = action.payload;
       },
       setError: (state, action) => {
         state.error = action.payload;
@@ -73,7 +83,7 @@ const initialState = {
         state.abortController = action.payload.abortController;
       },
       setLoadResourceData: (state, action) => {
-        state.loadResourcedata = action.payload;
+        state.loadresourcedata = action.payload;
       },
     },
   });
