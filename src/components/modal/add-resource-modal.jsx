@@ -6,11 +6,34 @@ import { X } from "lucide-react";
 import { ResourceSchema } from "../../validations/resource-validation-schema";
 import {
   availabilityList,
-  employeeList,
   roleList,
 } from "../../utils/resource-addAssigneModal";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { abortGetAllEmployees, getAllEmployees } from "../../modules/employee/employee-slice";
+import { AddResource } from "../../modules/resource/resource-slice";
 
-export const AddResources = ({ isOpen, onClose, mode, onSave }) => {
+export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllEmployees());
+
+    return () => {
+      dispatch(abortGetAllEmployees());
+    };
+  }, [dispatch]);
+  
+  const { loading, employees } = useSelector((state) => state?.root?.employee);
+  // console.log('employees',employees);
+
+  const employeeList = employees && employees?.length > 0 && employees?.map((o) => ({
+    label: o?.name,
+    value: o?.id
+  }));
+  
+  console.log('from modal',projectId);
+
   // Use the useForm hook from react-hook-form
   const {
     getValues,
@@ -31,9 +54,17 @@ export const AddResources = ({ isOpen, onClose, mode, onSave }) => {
   // Define the handleSave function
   const onSubmit = () => {
     let values = getValues();
-    // onSave(data, mode);
+
+    const resourceData = {
+      employeeId:values.employee,
+      projectId: projectId,
+      availability: values.availability,
+      role_type:values.role
+    }
+    console.log('resourceData',resourceData);
+    dispatch(AddResource(resourceData))
     closeAddResourceModal();
-    // console.log("called", values);
+   
   };
 
   // Define the closeAddResourceModal function
@@ -135,7 +166,7 @@ export const AddResources = ({ isOpen, onClose, mode, onSave }) => {
               )}
             />
 
-            <div className="text-center mt-4">
+            <div className="text-right mt-4">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded cursor-pointer"
                 type="submit"

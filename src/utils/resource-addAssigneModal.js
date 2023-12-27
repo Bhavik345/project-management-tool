@@ -6,10 +6,6 @@ export const availabilityList = [
 export const roleList = [
   { value: "teamLeader", label: "Team-Leader" },
   { value: "srdeveloper", label: "Senior Developer" },
+  { value: "projectmanager", label: "Project Manager" }
 ];
 
-export const employeeList = [
-  { value: "emp1", label: "anuj" },
-  { value: "emp2", label: "sanju" },
-  { value: "emp3", label: "rajav" },
-];
