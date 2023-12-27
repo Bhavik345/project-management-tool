@@ -10,30 +10,25 @@ import {
 } from "../../utils/resource-addAssigneModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { abortGetAllEmployees, getAllEmployees } from "../../modules/employee/employee-slice";
+import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
 import { AddResource } from "../../modules/resource/resource-slice";
 
 export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllEmployees());
-
     return () => {
       dispatch(abortGetAllEmployees());
     };
   }, [dispatch]);
   
   const { loading, employees } = useSelector((state) => state?.root?.employee);
-  // console.log('employees',employees);
 
   const employeeList = employees && employees?.length > 0 && employees?.map((o) => ({
     label: o?.name,
     value: o?.id
   }));
   
-  console.log('from modal',projectId);
-
   // Use the useForm hook from react-hook-form
   const {
     getValues,
@@ -61,10 +56,9 @@ export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
       availability: values.availability,
       role_type:values.role
     }
-    console.log('resourceData',resourceData);
     dispatch(AddResource(resourceData))
     closeAddResourceModal();
-   
+
   };
 
   // Define the closeAddResourceModal function

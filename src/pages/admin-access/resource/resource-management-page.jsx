@@ -4,6 +4,7 @@ import { AddResources } from "../../../components/modal/add-resource-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../../components/loader/loader";
 import { abortGetAllProjects, getAllProjects } from "../../../modules/projects/project-slice";
+import { getAllEmployees } from "../../../modules/employee/employee-slice";
 
 export default function ReSourceManageMentPage() {
   const { loading, projects } = useSelector((state) => state?.root?.project);
@@ -30,12 +31,12 @@ export default function ReSourceManageMentPage() {
   const [isAddResourceModalOpen, setIsAddResourceModalOpen] = useState(false);
 
   const handleResourceAdd = () => {
+    dispatch(getAllEmployees());
     setIsAddResourceModalOpen(true);
   };
   const closeAddResourceModal = () => {
     setIsAddResourceModalOpen(false);
   };
-console.log('projid',projectId);
   return (
     <>
       {loading ? (
