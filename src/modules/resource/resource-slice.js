@@ -63,7 +63,7 @@ const initialState = {
     name: "Resources",
     reducers: {
       setResources: (state, action) => {
-        state.Resources = action.payload;
+        state.resources = action.payload;
       },
       setError: (state, action) => {
         state.error = action.payload;
@@ -73,7 +73,7 @@ const initialState = {
         state.abortController = action.payload.abortController;
       },
       setLoadResourceData: (state, action) => {
-        state.loadResourcedata = action.payload;
+        state.loadresourcedata = action.payload;
       },
     },
   });
