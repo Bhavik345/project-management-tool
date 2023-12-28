@@ -1,15 +1,25 @@
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { AddResources } from "../../../components/modal/add-resource-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader } from "../../../components/loader/loader";
-import { abortGetAllProjects, getAllProjects } from "../../../modules/projects/project-slice";
+import {
+  abortGetAllProjects,
+  getAllProjects,
+} from "../../../modules/projects/project-slice";
 import { getAllEmployees } from "../../../modules/employee/employee-slice";
 
 export default function ReSourceManageMentPage() {
+  const [openTab, setOpenTab] = useState("");
+  const [projectId, setProjectId] = useState(null);
+  const [isAddResourceModalOpen, setIsAddResourceModalOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
   const { loading, projects } = useSelector((state) => state?.root?.project);
-  const {loading:resourceLoading}  = useSelector((state) => state?.root?.resource)
-  const dispatch = useDispatch()
+  const { loading: resourceLoading } = useSelector(
+    (state) => state?.root?.resource
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -22,14 +32,12 @@ export default function ReSourceManageMentPage() {
   useEffect(() => {
     // Set the first project's name as the default open tab when the component mounts
     if (projects.length > 0) {
-      setOpenTab(projects[0].project_name);
-      setProjectId(projects[0].id)
+      startTransition(() => {
+        setOpenTab(projects[0].project_name);
+        setProjectId(projects[0].id);
+      });
     }
   }, [projects]);
-
-  const [openTab, setOpenTab] = useState("");
-  const [projectId , setProjectId] = useState(null);
-  const [isAddResourceModalOpen, setIsAddResourceModalOpen] = useState(false);
 
   const handleResourceAdd = () => {
     dispatch(getAllEmployees());
@@ -49,6 +57,7 @@ export default function ReSourceManageMentPage() {
             <button
               className="bg-black text-white px-3 py-2 rounded-md flex items-center  mr-3"
               onClick={handleResourceAdd}
+              disabled={isPending}
             >
               <Plus className="w-5 h-5 mr-3 " />
               <span className="hidden sm:inline">Add Assignee</span>
@@ -60,7 +69,7 @@ export default function ReSourceManageMentPage() {
               onClose={closeAddResourceModal}
               projectId={projectId}
             />
-  
+
             <div className="flex items-center justify-evenly">
               <ul className="flex flex-col h-screen bg-white-200 w-1/4">
                 {projects.map((tab) => (
@@ -74,8 +83,10 @@ export default function ReSourceManageMentPage() {
                   >
                     <a
                       href={tab.link}
-                      onClick={() => {setOpenTab(tab.project_name); setProjectId(tab.id)}
-                      }
+                      onClick={() => {
+                        setOpenTab(tab.project_name);
+                        setProjectId(tab.id);
+                      }}
                       className="w-full inline-block text-center break-words"
                     >
                       {tab.project_name}
@@ -87,10 +98,15 @@ export default function ReSourceManageMentPage() {
                 {projects.map((tab) => (
                   <div
                     key={tab.project_name}
-                    className={tab.project_name === openTab ? "block" : "hidden"}
+                    className={
+                      tab.project_name === openTab ? "block" : "hidden"
+                    }
                   >
                     <h2 className="text-2xl font-extrabold">Profile</h2>
-                    <div className="text-xl "> Client Name :- {tab.client_name}</div>
+                    <div className="text-xl ">
+                      {" "}
+                      Client Name :- {tab.client_name}
+                    </div>
                     <p>Description - {tab.project_description}</p>
                   </div>
                 ))}
@@ -100,5 +116,5 @@ export default function ReSourceManageMentPage() {
         </>
       )}
     </>
-  )
+  );
 }
