@@ -73,7 +73,8 @@ export const AddOrEditEmployeeModal = ({
       shouldCloseOnOverlayClick={false}
     >
       <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4 shadow-primary-400"
+        style={{boxShadow: 'rgba(14, 30, 37, 0.12) 0px -10px 20px 8px, rgba(14, 30, 37, 0.32) 0px 2px 7px 6px'}}>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">
               {mode === "add" ? "Add Employee" : "Edit Employee "}

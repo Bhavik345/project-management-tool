@@ -27,7 +27,8 @@ export const getAllEmployees = () => async (dispatch) => {
       dispatch(setEmployees(response.data?.data));
     }
   } catch (error) {
-    ErrorToast(error?.response?.data?.message);
+    ErrorToast(error?.message);
+
     dispatch(setError(error?.message));
   } finally {
     dispatch(
