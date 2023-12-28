@@ -9,14 +9,12 @@ import {
   roleList,
 } from "../../utils/resource-addAssigneModal";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
 import { AddResource } from "../../modules/resource/resource-slice";
-import { ErrorToast } from "../../utils/toast-util";
 
 export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
   const dispatch = useDispatch();
-  const [projId,setprojID] = useState(projectId);
 
   useEffect(() => {
     return () => {
@@ -54,20 +52,12 @@ export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
 
     const resourceData = {
       employeeId:values.employee,
-      projectId: projId,
+      projectId: projectId,
       availability: values.availability,
       role_type:values.role
     }
+    dispatch(AddResource(resourceData))
     closeAddResourceModal();
-    try {
-      if (resourceData) {
-        dispatch(AddResource(resourceData))
-      } 
-    } catch (error) {
-      ErrorToast(error?.message);
-    } finally {
-      setprojID(null);
-    }
 
   };
 
@@ -90,7 +80,7 @@ export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
       shouldCloseOnOverlayClick={false}
     >
       <div className="flex items-center justify-center min-h-screen p-4">
-        <div className="bg-slate-300 rounded-lg shadow-lg shadow-primary-400 w-full max-w-md p-4" style={{border:'1px solid black'}}>
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-4" style={{border:'1px solid black'}}>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">Assign Projects</h2>
             <button
