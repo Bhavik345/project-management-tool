@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { ArrowDown, ArrowUp, X } from "lucide-react";
 import {
   useTable,
   useSortBy,
@@ -8,7 +8,7 @@ import {
 
 export const DataTable = ({ columns, data }) => {
   const {
-    getTableProps,
+    getTableProps,      
     getTableBodyProps,
     headerGroups,
     page,
@@ -70,9 +70,16 @@ export const DataTable = ({ columns, data }) => {
                         {column.id !== "actions" && (
                           <span>
                             {column.isSorted ? (
-                              <span>{column.isSortedDesc ? " ▼" : " ▲"}</span>
+                              <span>
+                                {column.isSortedDesc ? (
+                                  <ArrowDown className="w-5 h-5 text-gray-300" />
+                                ) : (
+                                  <ArrowUp className="w-5 h-5 text-gray-300" />
+                                )}
+                              </span>
                             ) : (
-                              ""
+                              // Display the sorting icon by default
+                              <ArrowUp className="w-5 h-5 text-gray-300" />
                             )}
                           </span>
                         )}

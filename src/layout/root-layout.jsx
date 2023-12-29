@@ -22,7 +22,7 @@ const RootLayout = () => {
 
   // Redirect to the appropriate route based on the user's role
   if (isUnauthorizedRoute) {
-    return <Navigate to={`/`} />;
+    return <Navigate to={-1} />;
   }
 
   return (
