@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { useSelector } from "react-redux";
+import { role } from "../../../utils/route-access";
 
 const AdminDashboardPage = lazy(() =>
   import("../../admin-access/admin-dashboard/admin-dashboard-page")
@@ -15,10 +16,10 @@ const DashboardPage = () => {
   let DashboardComponent;
 
   switch (userRole) {
-    case "ADMIN":
+    case role.admin:
       DashboardComponent = AdminDashboardPage;
       break;
-    case "employee":
+    case role.employee:
       DashboardComponent = EmployeeDashboardPage;
       break;
     default:

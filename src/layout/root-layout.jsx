@@ -1,14 +1,13 @@
 import { useSelector } from "react-redux";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/sidebar/sidebar";
-import { adminRoutes, employeeRoutes } from "../utils/route-access";
+import { adminRoutes, employeeRoutes, role } from "../utils/route-access";
 
 const RootLayout = () => {
   const location = useLocation();
-  const { isAuthenticated,user } = useSelector((state) =>state?.root?.auth);
+  const { isAuthenticated, user } = useSelector((state) => state?.root?.auth);
 
-  const userRole = user && user?.role ;
-
+  const userRole = user && user?.role;
 
   // Check if the user is not authenticated
   if (!isAuthenticated) {
@@ -16,10 +15,9 @@ const RootLayout = () => {
   }
 
   // Check if the user is trying to access an unauthorized route
-  const isUnauthorizedRoute = (
-    (userRole === "employee" && adminRoutes.includes(location.pathname)) ||
-    (userRole === "ADMIN" && employeeRoutes.includes(location.pathname))
-  );
+  const isUnauthorizedRoute =
+    (userRole === role.employee && adminRoutes.includes(location.pathname)) ||
+    (userRole === role.admin && employeeRoutes.includes(location.pathname));
 
   // Redirect to the appropriate route based on the user's role
   if (isUnauthorizedRoute) {

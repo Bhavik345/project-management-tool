@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { useSelector } from "react-redux";
+import { role } from "../../utils/route-access";
 
 const AdminRoutes = [
   {
@@ -47,7 +48,7 @@ export const SidebarRoutes = () => {
   const { user } = useSelector((state) => state?.root?.auth);
   const userRole = user && user?.role;
 
-  const AccessRoute = userRole === "ADMIN" ? AdminRoutes : employeeRoutes;
+  const AccessRoute = userRole === role.admin ? AdminRoutes : employeeRoutes;
   return (
     <div className="flex flex-col w-full">
       {AccessRoute.map((route) => (

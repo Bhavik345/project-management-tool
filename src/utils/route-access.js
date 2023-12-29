@@ -3,3 +3,7 @@ export const employeeRoutes = ["/profile"];
 
 
   
+export const role ={
+admin:'ADMIN',
+employee:'EMPLOYEE',
+}
