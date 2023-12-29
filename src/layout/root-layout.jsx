@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { Sidebar } from "../components/sidebar/sidebar";
 import { adminRoutes, employeeRoutes, role } from "../utils/route-access";
+import { MobileSideBar } from "../components/sidebar/mobile-sidebar";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -26,15 +27,27 @@ const RootLayout = () => {
 
   return (
     <>
-      <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
+      {/* <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
         <Sidebar />
-      </div>
+        <MobileSideBar/>
+      </div> */}
+{/* ------------------------------------------------------------------------------------------------------- */}
+      <div className="flex h-full">
+        {/* Desktop Sidebar */}
+        <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
+          <Sidebar />
+        </div>
 
-      <section className="md:pl-60 pt-[20px] h-full">
-        <Outlet />
-      </section>
+        {/* Mobile Sidebar */}
+        <div className="md:hidden">
+          <MobileSideBar />
+        </div>
+        <section className="w-full md:pl-60 pt-[20px] h-full">
+          <Outlet />
+        </section>
+      </div>
     </>
   );
 };
 
-export default RootLayout;
+export default RootLayout

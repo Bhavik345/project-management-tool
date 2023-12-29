@@ -71,7 +71,7 @@ export default function ReSourceManageMentPage() {
             />
 
             <div className="flex items-center justify-evenly">
-              <ul className="flex flex-col h-screen bg-white-200 w-1/4">
+              <ul className="flex flex-col h-screen bg-white-200 w-1/5">
                 {projects.map((tab) => (
                   <li
                     key={tab.project_name}
@@ -94,7 +94,7 @@ export default function ReSourceManageMentPage() {
                   </li>
                 ))}
               </ul>
-              <div className="pl-3 bg-white border rounded-xl h-screen w-3/4">
+              <div className="pl-3 bg-white rounded-xl h-screen w-8/12">
                 {projects.map((tab) => (
                   <div
                     key={tab.project_name}
@@ -102,12 +102,19 @@ export default function ReSourceManageMentPage() {
                       tab.project_name === openTab ? "block" : "hidden"
                     }
                   >
-                    <h2 className="text-2xl font-extrabold">Profile</h2>
-                    <div className="text-xl ">
-                      {" "}
-                      Client Name :- {tab.client_name}
+                    <div className="bg-blue-200 w-3/5 m-auto rounded">
+                      <h2 className="text-3xl font-medium pb-6 pt-6 text-center">
+                        Profile Details
+                      </h2>
+                        <hr />
+                      <div className="pb-6 pt-6 px-3 text-left ">
+                        <div className="">
+                          {" "}
+                          <span className="text-base tracking-widest">Client Name :-</span>  {tab.client_name}
+                        </div>
+                        <p> <span className="text-base tracking-widest">Description :-</span>  {tab.project_description}</p>
+                      </div>
                     </div>
-                    <p>Description - {tab.project_description}</p>
                   </div>
                 ))}
               </div>
