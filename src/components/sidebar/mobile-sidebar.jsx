@@ -26,12 +26,10 @@
 //   );
 // };
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Menu } from "lucide-react";
 import { Sidebar } from "./sidebar";
 
 export const MobileSideBar = () => {
-  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleToggleSidebar = () => {
@@ -40,7 +38,6 @@ export const MobileSideBar = () => {
 
   const handleClick = () => {
     handleToggleSidebar();
-    navigate("/");
   };
 
   return (
