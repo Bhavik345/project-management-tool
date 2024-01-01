@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
 import { AddResource } from "../../modules/resource/resource-slice";
+import { getAllProjects } from "../../modules/projects/project-slice";
 
 export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
   const dispatch = useDispatch();
@@ -49,16 +50,16 @@ export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
   // Define the handleSave function
   const onSubmit = () => {
     let values = getValues();
-
     const resourceData = {
       employeeId:values.employee,
       projectId: projectId,
       availability: values.availability,
       role_type:values.role
     }
-    dispatch(AddResource(resourceData))
+    dispatch(AddResource(resourceData)).then((res)=>{if(res.status == 201){
+      dispatch(getAllProjects())
+    }})
     closeAddResourceModal();
-
   };
 
   // Define the closeAddResourceModal function

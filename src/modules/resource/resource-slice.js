@@ -50,6 +50,7 @@ const initialState = {
       if (response.status === 201) {
         dispatch(getAllResources());
         SuccessToast(response.data?.message);
+        return response
         // dispatch(setResources(data));
       } else {
         ErrorToast(response.data.message);

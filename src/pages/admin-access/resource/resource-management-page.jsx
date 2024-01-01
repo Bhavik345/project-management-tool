@@ -30,14 +30,25 @@ export default function ReSourceManageMentPage() {
   }, [dispatch]);
 
   useEffect(() => {
+    let id = localStorage.getItem('ID')
     // Set the first project's name as the default open tab when the component mounts
     if (projects.length > 0) {
       startTransition(() => {
-        setOpenTab(projects[0].project_name);
+        if(id){
+          setOpenTab(id);
+        }else{
+          setOpenTab(projects[0].project_name);
+          handleTabId(projects[0].project_name)
+        }
         setProjectId(projects[0].id);
       });
     }
   }, [projects]);
+  
+  const handleTabId = (id) => {
+    console.log(id,'<---');
+    localStorage.setItem('ID',id)
+  }
 
   const handleResourceAdd = () => {
     dispatch(getAllEmployees());
@@ -72,6 +83,9 @@ export default function ReSourceManageMentPage() {
 
             <div className="flex items-center justify-evenly">
               <ul className="flex flex-col h-screen bg-white-200 w-1/5">
+                <div className="text-center font-medium text-3xl p-6">
+                  Projects
+                </div>
                 {projects.map((tab) => (
                   <li
                     key={tab.project_name}
@@ -86,6 +100,7 @@ export default function ReSourceManageMentPage() {
                       onClick={() => {
                         setOpenTab(tab.project_name);
                         setProjectId(tab.id);
+                        handleTabId(tab.project_name)
                       }}
                       className="w-full inline-block text-center break-words"
                     >
@@ -102,17 +117,39 @@ export default function ReSourceManageMentPage() {
                       tab.project_name === openTab ? "block" : "hidden"
                     }
                   >
+                    <h2 className="text-3xl font-medium pb-6 pt-6 text-center">
+                      Profile Details
+                    </h2>
                     <div className="bg-blue-200 w-3/5 m-auto rounded">
-                      <h2 className="text-3xl font-medium pb-6 pt-6 text-center">
-                        Profile Details
-                      </h2>
-                        <hr />
                       <div className="pb-6 pt-6 px-3 text-left ">
-                        <div className="">
+                        <div className="mt-2 mb-4">
                           {" "}
-                          <span className="text-base tracking-widest">Client Name :-</span>  {tab.client_name}
+                          <span className="text-base tracking-widest font-bold">
+                            Client Name :-
+                          </span>{" "}
+                          {tab?.client_name}
                         </div>
-                        <p> <span className="text-base tracking-widest">Description :-</span>  {tab.project_description}</p>
+                        <p className="mb-4">
+                          {" "}
+                          <p className="text-base tracking-widest font-bold">
+                            Description :-
+                          </p>{" "}
+                          <p className="text-justify break-words px-5">
+                            {tab?.project_description}
+                          </p>
+                        </p>
+                        <p className="mb-2">
+                          <span className="text-base tracking-widest font-bold">
+                            Employees:-{" "}
+                          </span>
+                          <div className="flex flex-wrap">
+                            {tab?.resources.map((item, index) => (
+                              <div key={index} className="w-1/2 py-2 px-4">
+                                - {item?.employee?.name}
+                              </div>
+                            ))}
+                          </div>
+                        </p>
                       </div>
                     </div>
                   </div>
