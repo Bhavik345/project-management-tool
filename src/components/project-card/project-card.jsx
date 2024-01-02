@@ -4,21 +4,23 @@ const ProjectCard = ({ o }) => {
   );
 
   return (
-    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div
+      className="dashboard-card max-w-sm p-6 shadow-[-0.1rem_1.7rem_6.6rem_-3.2rem_rgba(0,0,0,0.5)] text-white border-[none] rounded-[0_30px_0_30px] transition-all"
+    >
       <div className="mb-2">
-        <span className="font-semibold text-gray-700 dark:text-gray-400">
+        <span className=" text-white dark:text-gray-400 text-[20px] font-[600]">
           Project Name:
         </span>{" "}
         {o?.project_name ? o?.project_name : "-"}
       </div>
       <div className="mb-2">
-        <span className="font-semibold text-gray-700 dark:text-gray-400">
+        <span className=" text-white dark:text-gray-400 text-[20px] font-[600]">
           Client Name:
         </span>{" "}
         {o?.client_name ? o?.client_name : "-"}
       </div>
       <div className="mb-2">
-        <span className="font-semibold text-gray-700 dark:text-gray-400">
+        <span className="text-white dark:text-gray-400 text-[20px] font-[600]">
           Employee Name:
         </span>{" "}
         {employeeNames && employeeNames.length > 0
@@ -26,7 +28,7 @@ const ProjectCard = ({ o }) => {
           : "-"}
       </div>
       <div>
-        <span className="font-semibold text-gray-700 dark:text-gray-400">
+        <span className="text-white dark:text-gray-400 text-[20px] font-[600]">
           Project Description:
         </span>{" "}
         {o?.project_description ? o?.project_description : "-"}

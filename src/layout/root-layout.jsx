@@ -27,11 +27,6 @@ const RootLayout = () => {
 
   return (
     <>
-      {/* <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
-        <Sidebar />
-        <MobileSideBar/>
-      </div> */}
-{/* ------------------------------------------------------------------------------------------------------- */}
       <div className="flex h-full">
         {/* Desktop Sidebar */}
         <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
@@ -42,7 +37,7 @@ const RootLayout = () => {
         <div className="md:hidden">
           <MobileSideBar />
         </div>
-        <section className="w-full md:pl-60 pt-[20px] h-full">
+        <section className="w-full md:pl-60 pt-[20px] h-full pr-4 pb-5">
           <Outlet />
         </section>
       </div>

@@ -7,3 +7,15 @@ body,
 :root {
   height: 100%;
 }
+.dashboard-card:nth-child(1n) {
+  background: linear-gradient(to bottom, #ff73b9, #ff40a1);
+}
+.dashboard-card:nth-child(2n) {
+  background: linear-gradient(to bottom, #47c2d7, #279eb2);
+}
+.dashboard-card:nth-child(3n) {
+  background: linear-gradient(to bottom, #fb9b88, #f86647);
+}
+.dashboard-card:nth-child(4n) {
+  background: linear-gradient(to bottom, #ffd43d, #d9aa07);
+}

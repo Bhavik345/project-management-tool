@@ -46,7 +46,6 @@ export default function ReSourceManageMentPage() {
   }, [projects]);
   
   const handleTabId = (id) => {
-    console.log(id,'<---');
     localStorage.setItem('ID',id)
   }
 
