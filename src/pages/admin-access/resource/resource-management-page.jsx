@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { useEffect, useState, useTransition } from "react";
 import { AddResources } from "../../../components/modal/add-resource-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,13 +7,21 @@ import {
   abortGetAllProjects,
   getAllProjects,
 } from "../../../modules/projects/project-slice";
-import { getAllEmployees } from "../../../modules/employee/employee-slice";
+import {
+  DeleteEmployee,
+  getAllEmployees,
+} from "../../../modules/employee/employee-slice";
+import { DeleteConfirmationModal } from "../../../components/modal/delete-confirmation-modal";
 
 export default function ReSourceManageMentPage() {
   const [openTab, setOpenTab] = useState("");
   const [projectId, setProjectId] = useState(null);
   const [isAddResourceModalOpen, setIsAddResourceModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
+    useState(false);
+  const [ID, setID] = useState(null);
+  const [saveId, setSaveId] = useState('')
 
   const { loading, projects } = useSelector((state) => state?.root?.project);
   const { loading: resourceLoading } = useSelector(
@@ -30,24 +38,24 @@ export default function ReSourceManageMentPage() {
   }, [dispatch]);
 
   useEffect(() => {
-    let id = localStorage.getItem('ID')
+    let id = localStorage.getItem("ID");
     // Set the first project's name as the default open tab when the component mounts
     if (projects.length > 0) {
       startTransition(() => {
-        if(id){
+        if (id) {
           setOpenTab(id);
-        }else{
+        } else {
           setOpenTab(projects[0].project_name);
-          handleTabId(projects[0].project_name)
+          handleTabId(projects[0].project_name);
         }
         setProjectId(projects[0].id);
       });
     }
   }, [projects]);
-  
+
   const handleTabId = (id) => {
-    localStorage.setItem('ID',id)
-  }
+    localStorage.setItem("ID", id);
+  };
 
   const handleResourceAdd = () => {
     dispatch(getAllEmployees());
@@ -55,6 +63,23 @@ export default function ReSourceManageMentPage() {
   };
   const closeAddResourceModal = () => {
     setIsAddResourceModalOpen(false);
+  };
+
+  const handleDelete = (ID) => {
+    setSaveId(ID)
+    setIsDeleteConfirmationModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    // ===================================================================================================
+    dispatch(DeleteEmployee(saveId));
+    setIsDeleteConfirmationModalOpen(false);
+    setID(null);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteConfirmationModalOpen(false);
+    setID(null);
   };
   return (
     <>
@@ -74,12 +99,18 @@ export default function ReSourceManageMentPage() {
             </button>
           </div>
           <div className="container mx-auto">
+            {/* ------------------------- modals of page start ------------------------- */}
             <AddResources
               isOpen={isAddResourceModalOpen}
               onClose={closeAddResourceModal}
               projectId={projectId}
             />
-
+            <DeleteConfirmationModal
+              isOpen={isDeleteConfirmationModalOpen}
+              onClose={handleCancelDelete}
+              onDelete={handleConfirmDelete}
+            />
+            {/* ------------------------- modals of page ends  ------------------------- */}
             <div className="flex items-center justify-evenly">
               <ul className="flex flex-col h-screen bg-white-200 w-1/5">
                 <div className="text-center font-medium text-3xl p-6">
@@ -99,7 +130,7 @@ export default function ReSourceManageMentPage() {
                       onClick={() => {
                         setOpenTab(tab.project_name);
                         setProjectId(tab.id);
-                        handleTabId(tab.project_name)
+                        handleTabId(tab.project_name);
                       }}
                       className="w-full inline-block text-center break-words"
                     >
@@ -119,36 +150,47 @@ export default function ReSourceManageMentPage() {
                     <h2 className="text-3xl font-medium pb-6 pt-6 text-center">
                       Profile Details
                     </h2>
-                    <div className="bg-blue-200 w-3/5 m-auto rounded">
+                    <div className="bg-blue-200 w-5/5 m-auto rounded">
                       <div className="pb-6 pt-6 px-3 text-left ">
-                        <div className="mt-2 mb-4">
-                          {" "}
-                          <span className="text-base tracking-widest font-bold">
-                            Client Name :-
-                          </span>{" "}
-                          {tab?.client_name}
+                        <div className="flex justify-between bg-white rounded-[10px] py-4 px-2">
+                          <div className=" w-1/3">
+                            <span className="text-base tracking-widest font-bold">
+                              Client Name :-
+                            </span>{" "}
+                            {tab?.client_name}
+                          </div>
+
+                          <div className=" w-1/3">
+                            <p>
+                              <span className="text-base tracking-widest font-bold">
+                                Description :-
+                              </span>
+                              {tab?.project_description}
+                            </p>
+                          </div>
                         </div>
-                        <p className="mb-4">
-                          {" "}
-                          <p className="text-base tracking-widest font-bold">
-                            Description :-
-                          </p>{" "}
-                          <p className="text-justify break-words px-5">
-                            {tab?.project_description}
-                          </p>
-                        </p>
-                        <p className="mb-2">
-                          <span className="text-base tracking-widest font-bold">
-                            Employees:-{" "}
-                          </span>
-                          <div className="flex flex-wrap">
+
+                        <div className="mb-2 bg-white mt-5 p-3 rounded-[10px]">
+                          <div className="text-2xl text-center mb-2 tracking-widest font-bold">
+                            Employees
+                          </div>
+                          <div className="flex flex-wrap justify-between">
                             {tab?.resources.map((item, index) => (
-                              <div key={index} className="w-1/2 py-2 px-4">
-                                - {item?.employee?.name}
+                              <div
+                                key={index}
+                                className="w-5/12 py-2 px-4 flex justify-between items-center bg-blue-200 m-2 rounded-[10px]"
+                              >
+                                <div>{item?.employee?.name}</div>
+                                <div
+                                  className="bg-red-500 text-white px-2.5 py-2 hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800 w-10 cursor-pointer rounded-[50%]"
+                                  onClick={() => handleDelete(item.employee.id)}
+                                >
+                                  <Trash className="w-auto h-5" />
+                                </div>
                               </div>
                             ))}
                           </div>
-                        </p>
+                        </div>
                       </div>
                     </div>
                   </div>
