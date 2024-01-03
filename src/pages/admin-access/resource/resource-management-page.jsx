@@ -45,11 +45,14 @@ export default function ReSourceManageMentPage() {
       startTransition(() => {
         if (id) {
           setOpenTab(id);
+          setProjectId(id)
         } else {
-          setOpenTab(projects[0].project_name);
-          handleTabId(projects[0].project_name);
+          setOpenTab(projects[0].id);
+          handleTabId(projects[0].id);
+          setProjectId(projects[0].id)
         }
-        setProjectId(projects[0].id);
+        console.log('pr id--',projects[0].id);
+        
       });
     }
   }, [projects]);
@@ -82,6 +85,7 @@ export default function ReSourceManageMentPage() {
     setIsDeleteConfirmationModalOpen(false);
     setID(null);
   };
+  console.log('projects',projects);
   return (
     <>
       {loading || resourceLoading ? (
@@ -119,9 +123,9 @@ export default function ReSourceManageMentPage() {
                 </div>
                 {projects.map((tab) => (
                   <li
-                    key={tab.project_name}
+                    key={tab.id}
                     className={`w-full text-center px-2 py-2 my-2  rounded  ${
-                      openTab === tab.project_name
+                      openTab == tab.id
                         ? "bg-blue-700 text-white"
                         : "bg-blue-300"
                     } cursor-pointer `}
@@ -129,9 +133,9 @@ export default function ReSourceManageMentPage() {
                     <a
                       href={tab.link}
                       onClick={() => {
-                        setOpenTab(tab.project_name);
+                        setOpenTab(tab.id);
                         setProjectId(tab.id);
-                        handleTabId(tab.project_name);
+                        handleTabId(tab.id);
                         dispatch(setProjectTab(tab));
                       }}
                       className="w-full inline-block text-center break-words"
@@ -144,9 +148,9 @@ export default function ReSourceManageMentPage() {
               <div className="pl-3 bg-white rounded-xl h-screen w-8/12">
                 {projects.map((tab) => (
                   <div
-                    key={tab.project_name}
+                    key={tab.id}
                     className={
-                      tab.project_name === openTab ? "block" : "hidden"
+                      tab.id == openTab ? "block" : "hidden"
                     }
                   >
                     <h2 className="text-3xl font-medium pb-6 pt-6 text-center">
