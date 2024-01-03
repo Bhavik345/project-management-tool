@@ -28,7 +28,7 @@ const AdminDashboardPage = () => {
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <div className="relative flex items-center mr-4">
+        {/* <div className="relative flex items-center mr-4">
           <input
             type="text"
             value={searchTerm}
@@ -42,7 +42,7 @@ const AdminDashboardPage = () => {
               onClick={() => setSearchTerm("")}
             />
           )}
-        </div>
+        </div> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
