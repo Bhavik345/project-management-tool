@@ -7,6 +7,7 @@ import {
   getAllProjects,
 } from "../../../modules/projects/project-slice";
 import DashboardSkelton from "../../../components/skelton/dashboard-skelton";
+import AdminDshboardPieChart from "../../../components/charts/admin-dashboard-piechart";
 
 const AdminDashboardPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,10 +21,6 @@ const AdminDashboardPage = () => {
       dispatch(abortGetAllProjects());
     };
   }, [dispatch]);
-  const filterProject = projects?.filter((o) =>
-    o?.project_name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-4">
@@ -50,7 +47,11 @@ const AdminDashboardPage = () => {
           ? Array.from({ length: 6 }).map((_, index) => (
               <DashboardSkelton key={index} />
             ))
-          : filterProject?.map((o) => <ProjectCard key={o?.id} o={o} />)}
+          : projects?.map((o) => <ProjectCard key={o?.id} o={o} />)}
+      </div>
+      <div className="flex justify-center flex-col items-center ">
+        <h2 className="font-bold  text-center mt-32">Pie Chart</h2>
+        <AdminDshboardPieChart projects={projects} />
       </div>
     </div>
   );

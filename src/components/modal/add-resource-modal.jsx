@@ -12,31 +12,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
 import { AddResource } from "../../modules/resource/resource-slice";
-import { getAllProjects } from "../../modules/projects/project-slice";
+import {
+  getAllProjects,
+  setProjectTab,
+} from "../../modules/projects/project-slice";
 
-export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
+export const AddResources = ({
+  isOpen,
+  onClose,
+  mode,
+  onSave,
+  projectId,
+  projectTab,
+}) => {
   const dispatch = useDispatch();
+  const { employees } = useSelector((state) => state?.root?.employee);
+  const { projecttab, projects } = useSelector((state) => state?.root?.project);
 
   useEffect(() => {
     return () => {
       dispatch(abortGetAllEmployees());
     };
   }, [dispatch]);
-  
-  const { loading, employees } = useSelector((state) => state?.root?.employee);
 
-  const employeeList = employees && employees?.length > 0 && employees?.map((o) => ({
-    label: o?.name,
-    value: o?.id
-  }));
-  
+
+  const employeeIdsInProject = projecttab?.resources?.map(
+    (resource) => resource.employee.id
+  );
+
+  // Filter employees that are not in the project
+  const employeesNotInProject = employees?.filter(
+    (employee) => !employeeIdsInProject?.includes(employee?.id)
+  );  
+
+  console.log(employeesNotInProject,54)
+  const employeeList =
+    employeesNotInProject &&
+    employeesNotInProject?.length > 0 ?
+    employeesNotInProject?.map((o) => ({
+      label: o?.name,
+      value: o?.id,
+    })):[]
+
   // Use the useForm hook from react-hook-form
   const {
     getValues,
     handleSubmit,
     control,
     setValue,
-    formState: { isSubmitting, isValid, errors },
+    formState: { errors },
     reset,
   } = useForm({
     resolver: yupResolver(ResourceSchema),
@@ -47,18 +71,26 @@ export const AddResources = ({ isOpen, onClose, mode, onSave, projectId }) => {
     },
   });
 
+  console.log(projecttab, 72);
+
   // Define the handleSave function
+  console.log(projectId,77)
   const onSubmit = () => {
     let values = getValues();
     const resourceData = {
-      employeeId:values.employee,
+      employeeId: values.employee,
       projectId: projectId,
       availability: values.availability,
-      role_type:values.role
-    }
-    dispatch(AddResource(resourceData)).then((res)=>{if(res.status == 201){
-      dispatch(getAllProjects())
-    }})
+      role_type: values.role,
+    };
+    dispatch(AddResource(resourceData)).then((res) => {
+      setTimeout(() => {
+        if (res.status == 201) {
+          const updatedProjectList = projects?.find((o) => o?.id === projectId);
+          dispatch(setProjectTab(updatedProjectList));
+        }
+      }, 3000);
+    });
     closeAddResourceModal();
   };
 

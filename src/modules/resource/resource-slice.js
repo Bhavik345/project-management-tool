@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ErrorToast, SuccessToast } from "../../utils/toast-util";
 import authApi from "../../utils/api";
+import { getAllProjects } from "../projects/project-slice";
 
 const initialState = {
     resources: [],
@@ -49,6 +50,8 @@ const initialState = {
       const response = await authApi.post(`resource/assign`, data);
       if (response.status === 201) {
         dispatch(getAllResources());
+        dispatch(getAllProjects());
+
         SuccessToast(response.data?.message);
         return response
         // dispatch(setResources(data));

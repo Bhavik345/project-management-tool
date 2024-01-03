@@ -6,6 +6,7 @@ import { Loader } from "../../../components/loader/loader";
 import {
   abortGetAllProjects,
   getAllProjects,
+  setProjectTab
 } from "../../../modules/projects/project-slice";
 import {
   DeleteEmployee,
@@ -131,6 +132,7 @@ export default function ReSourceManageMentPage() {
                         setOpenTab(tab.project_name);
                         setProjectId(tab.id);
                         handleTabId(tab.project_name);
+                        dispatch(setProjectTab(tab));
                       }}
                       className="w-full inline-block text-center break-words"
                     >
