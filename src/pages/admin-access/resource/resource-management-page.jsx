@@ -39,7 +39,6 @@ export default function ReSourceManageMentPage() {
   }, [dispatch]);
 
   useEffect(() => {
-  dispatch(getAllResources())
     let id = localStorage.getItem("ID");
     // Set the first project's name as the default open tab when the component mounts
     if (projects.length > 0) {
