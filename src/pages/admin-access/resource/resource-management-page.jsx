@@ -9,10 +9,10 @@ import {
   setProjectTab
 } from "../../../modules/projects/project-slice";
 import {
-  DeleteEmployee,
   getAllEmployees,
 } from "../../../modules/employee/employee-slice";
 import { DeleteConfirmationModal } from "../../../components/modal/delete-confirmation-modal";
+import { DeleteResourceEmployee, getAllResources } from "../../../modules/resource/resource-slice";
 
 export default function ReSourceManageMentPage() {
   const [openTab, setOpenTab] = useState("");
@@ -25,20 +25,21 @@ export default function ReSourceManageMentPage() {
   const [saveId, setSaveId] = useState('')
 
   const { loading, projects } = useSelector((state) => state?.root?.project);
-  const { loading: resourceLoading } = useSelector(
-    (state) => state?.root?.resource
-  );
+  const { loading: resourceLoading } = useSelector((state) => state?.root?.resource);
+  
   const dispatch = useDispatch();
+
+  
 
   useEffect(() => {
     dispatch(getAllProjects());
-
     return () => {
       dispatch(abortGetAllProjects());
     };
   }, [dispatch]);
 
   useEffect(() => {
+  dispatch(getAllResources())
     let id = localStorage.getItem("ID");
     // Set the first project's name as the default open tab when the component mounts
     if (projects.length > 0) {
@@ -51,7 +52,6 @@ export default function ReSourceManageMentPage() {
           handleTabId(projects[0].id);
           setProjectId(projects[0].id)
         }
-        console.log('pr id--',projects[0].id);
         
       });
     }
@@ -69,14 +69,16 @@ export default function ReSourceManageMentPage() {
     setIsAddResourceModalOpen(false);
   };
 
-  const handleDelete = (ID) => {
-    setSaveId(ID)
+  const handleDelete = (item) => {
+    setSaveId(item.id)
     setIsDeleteConfirmationModalOpen(true);
   };
 
   const handleConfirmDelete = () => {
-    // ===================================================================================================
-    dispatch(DeleteEmployee(saveId));
+    let payload = {
+      id: saveId
+    }
+    dispatch(DeleteResourceEmployee(payload));
     setIsDeleteConfirmationModalOpen(false);
     setID(null);
   };
@@ -85,7 +87,7 @@ export default function ReSourceManageMentPage() {
     setIsDeleteConfirmationModalOpen(false);
     setID(null);
   };
-  console.log('projects',projects);
+
   return (
     <>
       {loading || resourceLoading ? (
@@ -158,7 +160,7 @@ export default function ReSourceManageMentPage() {
                     </h2>
                     <div className="bg-blue-200 w-5/5 m-auto rounded">
                       <div className="pb-6 pt-6 px-3 text-left ">
-                        <div className="flex justify-between bg-white rounded-[10px] py-4 px-2">
+                        <div className="flex justify-between bg-white rounded-[10px] py-4 px-2 mt-2">
                           <div className=" w-1/3">
                             <span className="text-base tracking-widest font-bold">
                               Client Name :-
@@ -189,7 +191,7 @@ export default function ReSourceManageMentPage() {
                                 <div>{item?.employee?.name}</div>
                                 <div
                                   className="bg-red-500 text-white px-2.5 py-2 hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800 w-10 cursor-pointer rounded-[50%]"
-                                  onClick={() => handleDelete(item.employee.id)}
+                                  onClick={() => handleDelete(item)}
                                 >
                                   <Trash className="w-auto h-5" />
                                 </div>
