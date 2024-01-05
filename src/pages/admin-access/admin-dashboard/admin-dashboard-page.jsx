@@ -21,6 +21,59 @@ const AdminDashboardPage = () => {
       dispatch(abortGetAllProjects());
     };
   }, [dispatch]);
+
+  // console.log('projects',projects?.map((itm)=>itm.resources.map((o)=>o.role_type)));
+  const dataRole = projects?.map((itm) => {
+    let newItem = { ...itm }; // Create a shallow copy of itm
+  
+    let projectManagerCount = 0;
+    let teamLeaderCount = 0;
+    let srdeveloperCount = 0;
+  
+    itm.resources.forEach((o) => {
+      if (o.role_type === 'projectmanager') {
+        projectManagerCount += 1;
+      } else if (o.role_type === 'teamLeader' || o.role_type === 'Team Leader' ){
+        teamLeaderCount += 1;
+      } else if (o.role_type === 'srdeveloper') {
+        srdeveloperCount += 1;
+      }
+    });
+  
+    newItem.projectManagerCount = projectManagerCount;
+    newItem.teamCount = teamLeaderCount;
+    newItem.srdeveloper = srdeveloperCount;
+  
+    return newItem;
+  });
+
+  function recursiveSort(arr, criteria) {
+    if (criteria.length === 0) {
+      return arr;
+    }
+  
+    const key = criteria[0];
+  
+    arr.sort((a, b) => {
+      if (a[key] < b[key]) {
+        return 1;
+      } else if (a[key] > b[key]) {
+        return -1;
+      } else {
+        // If values are equal, sort based on next criteria
+        return recursiveSort([a, b], criteria.slice(1))[0] === a ? -1 : 1;
+      }
+    });
+  
+    return arr;
+  }
+  
+  // Define the sorting criteria (in the order of importance)
+  const sortingCriteria = ['projectManagerCount', 'teamCount','srdeveloper'];
+  
+  // Perform recursive sort
+  const sortedData = recursiveSort(dataRole, sortingCriteria);
+  
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-4">
@@ -47,10 +100,10 @@ const AdminDashboardPage = () => {
           ? Array.from({ length: 6 }).map((_, index) => (
               <DashboardSkelton key={index} />
             ))
-          : projects?.map((o) => <ProjectCard key={o?.id} o={o} />)}
+          : sortedData?.map((o) => <ProjectCard key={o?.id} o={o} />)}
       </div>
-      <div className="flex justify-center flex-col items-center ">
-        <h2 className="font-bold  text-center mt-32">Pie Chart</h2>
+      <div className="flex justify-center flex-col items-center bg-white w-3/4 m-auto mt-4 shadow-[-0.1rem_1.7rem_6.6rem_-3.2rem_rgba(0,0,0,0.5)] rounded">
+        <h2 className="font-bold  text-center mt-5 -mb-10 mx-0]">Pie Chart</h2>
         <AdminDshboardPieChart projects={projects} />
       </div>
     </div>

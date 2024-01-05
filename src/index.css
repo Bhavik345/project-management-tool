@@ -19,3 +19,12 @@ body,
 .dashboard-card:nth-child(4n) {
   background: linear-gradient(to bottom, #ffd43d, #d9aa07);
 }
+.recharts-legend-wrapper{
+  /* display: none; */
+  right: -30px !important;
+  /* top:130px !important */
+}
+.recharts-wrapper{
+  margin: 0 0 -70px 0 !important;
+
+}

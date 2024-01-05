@@ -45,7 +45,6 @@ export const AddResources = ({
     (employee) => !employeeIdsInProject?.includes(employee?.id)
   );  
 
-  console.log(employeesNotInProject,54)
   const employeeList =
     employeesNotInProject &&
     employeesNotInProject?.length > 0 ?
@@ -71,10 +70,8 @@ export const AddResources = ({
     },
   });
 
-  console.log(projecttab, 72);
 
   // Define the handleSave function
-  console.log(projectId,77)
   const onSubmit = () => {
     let values = getValues();
     const resourceData = {
