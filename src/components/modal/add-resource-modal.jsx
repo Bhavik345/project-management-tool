@@ -11,11 +11,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
-import { AddResource } from "../../modules/resource/resource-slice";
 import {
-  getAllProjects,
-  setProjectTab,
-} from "../../modules/projects/project-slice";
+  AddResource,
+  setIsProjectUpdate,
+} from "../../modules/resource/resource-slice";
+import { setProjectTab } from "../../modules/projects/project-slice";
 
 export const AddResources = ({
   isOpen,
@@ -27,13 +27,21 @@ export const AddResources = ({
 }) => {
   const dispatch = useDispatch();
   const { employees } = useSelector((state) => state?.root?.employee);
+  const { isprojectupdate } = useSelector((state) => state?.root?.resource);
   const { projecttab, projects } = useSelector((state) => state?.root?.project);
-
   useEffect(() => {
     return () => {
       dispatch(abortGetAllEmployees());
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (isprojectupdate) {
+      const updatedProjectList = projects?.find((o) => o?.id === +projectId);
+      dispatch(setProjectTab(updatedProjectList));
+      dispatch(setIsProjectUpdate(false));
+    }
+  }, [dispatch, isprojectupdate, projectId, projects]);
 
 
   const employeeIdsInProject = projecttab?.resources?.map(
@@ -43,15 +51,15 @@ export const AddResources = ({
   // Filter employees that are not in the project
   const employeesNotInProject = employees?.filter(
     (employee) => !employeeIdsInProject?.includes(employee?.id)
-  );  
+  );
 
   const employeeList =
-    employeesNotInProject &&
-    employeesNotInProject?.length > 0 ?
-    employeesNotInProject?.map((o) => ({
-      label: o?.name,
-      value: o?.id,
-    })):[]
+    employeesNotInProject && employeesNotInProject?.length > 0
+      ? employeesNotInProject?.map((o) => ({
+          label: o?.name,
+          value: o?.id,
+        }))
+      : [];
 
   // Use the useForm hook from react-hook-form
   const {
@@ -70,9 +78,7 @@ export const AddResources = ({
     },
   });
 
-
-  // Define the handleSave function
-  const onSubmit = () => {
+  const onSubmit = async () => {
     let values = getValues();
     const resourceData = {
       employeeId: values.employee,
@@ -80,15 +86,14 @@ export const AddResources = ({
       availability: values.availability,
       role_type: values.role,
     };
-    dispatch(AddResource(resourceData)).then((res) => {
-      setTimeout(() => {
-        if (res.status == 201) {
-          const updatedProjectList = projects?.find((o) => o?.id === projectId);
-          dispatch(setProjectTab(updatedProjectList));
-        }
-      }, 3000);
-    });
-    closeAddResourceModal();
+
+    try {
+      dispatch(AddResource(resourceData));
+    } catch (error) {
+      console.error("Error while dispatching AddResource:", error);
+    } finally {
+      closeAddResourceModal();
+    }
   };
 
   // Define the closeAddResourceModal function
@@ -100,7 +105,6 @@ export const AddResources = ({
   const onChangeHandle = (selectedOption, nameSelect) => {
     setValue(nameSelect, selectedOption.value);
   };
-
   return (
     <Modal
       isOpen={isOpen}
