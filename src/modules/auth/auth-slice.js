@@ -17,6 +17,8 @@ export const LoginAPI = (data) => async (dispatch) => {
     );
     if (response.status === 200) {
       localStorage.setItem('token',response?.data?.data?.token);
+      let Role =  response?.data?.data?.role; 
+      response.data.data.role = Role.toUpperCase(); 
       dispatch(login(response?.data?.data));
 
       SuccessToast(response.data.message);

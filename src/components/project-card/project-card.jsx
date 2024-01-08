@@ -23,14 +23,14 @@ const ProjectCard = ({ o }) => {
         <span className="text-white dark:text-gray-400 text-[17px] font-[600]">
           Employee Name:
         </span>{" "}
-                <div className="flex flex-wrap">
-                    {o?.resources.map((item, index) => (
-                        <div key={index} className="w-1/2 py-2 px-4">
-                          - {item?.employee?.name}
-                       </div>
-                      ))}
-                 </div>
       </div>
+          <div className="flex flex-wrap">
+              {o?.resources.map((item, index) => (
+                  <div key={index} className="w-1/2 py-2 px-4">
+                    - {item?.employee?.name}
+                 </div>
+                ))}
+           </div>
       {/* <div>
         <span className="text-white dark:text-gray-400 text-[20px] font-[600]">
           Project Description:

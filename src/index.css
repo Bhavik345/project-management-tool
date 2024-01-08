@@ -21,8 +21,8 @@ body,
 }
 .recharts-legend-wrapper{
   /* display: none; */
-  right: -30px !important;
-  /* top:130px !important */
+  right: -60px !important;
+  top:100px !important
 }
 .recharts-wrapper{
   margin: 0 0 -70px 0 !important;

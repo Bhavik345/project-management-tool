@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { DataTable } from "../../../components/tables/data-table";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Edit, History, Plus, Trash } from "lucide-react";
 import { DeleteConfirmationModal } from "../../../components/modal/delete-confirmation-modal";
 import { AddOrEditEmployeeModal } from "../../../components/modal/add-edit-employee-modal";
 import { ErrorToast } from "../../../utils/toast-util";
@@ -15,11 +15,12 @@ import {
   getAllEmployees,
   setLoadEmployeeDetails,
 } from "../../../modules/employee/employee-slice";
+import { HistoryModal } from "../../../components/modal/history-modal";
 
 const EmployeePage = () => {
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
-  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
-    useState(false);
+  const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =useState(false);
+  const [historyOpen, setHistoryOpen] =useState(false);
   const [modalMode, setModalMode] = useState("add");
 
   const [ID, setID] = useState(null);
@@ -78,6 +79,12 @@ const EmployeePage = () => {
       setIsDeleteConfirmationModalOpen(true);
     }
   };
+  const handleHistory = (row) => {
+    if (row) {
+      setID(row?.id);
+      setHistoryOpen(true);
+    }
+  };
 
   const handleConfirmDelete = () => {
     dispatch(DeleteEmployee(ID));
@@ -87,6 +94,7 @@ const EmployeePage = () => {
 
   const handleCancelDelete = () => {
     setIsDeleteConfirmationModalOpen(false);
+    setHistoryOpen(false);
     setID(null);
   };
 
@@ -113,6 +121,12 @@ const EmployeePage = () => {
               className="bg-red-500 text-white px-2.5 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800"
             >
               <Trash className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => handleHistory(row?.original)}
+              className="bg-green-500 text-white px-2.5 py-2 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-800"
+            >
+              <History className="w-5 h-5" />
             </button>
           </div>
         ),
@@ -154,6 +168,12 @@ const EmployeePage = () => {
             isOpen={isDeleteConfirmationModalOpen}
             onClose={handleCancelDelete}
             onDelete={handleConfirmDelete}
+          />
+
+          <HistoryModal
+           ID={ID}
+           isOpen={historyOpen}
+           onClose={handleCancelDelete}
           />
         </div>
       )}
