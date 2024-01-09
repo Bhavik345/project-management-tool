@@ -25,7 +25,6 @@ const EmployeePage = () => {
 
   const [ID, setID] = useState(null);
   const dispatch = useDispatch();
-
   const { loading, employees } = useSelector((state) => state?.root?.employee);
 
   useEffect(() => {
@@ -170,11 +169,12 @@ const EmployeePage = () => {
             onDelete={handleConfirmDelete}
           />
 
-          <HistoryModal
+          {historyOpen && <HistoryModal
            ID={ID}
+           dataa = {data}
            isOpen={historyOpen}
            onClose={handleCancelDelete}
-          />
+          />}
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ErrorToast, SuccessToast } from "../../utils/toast-util";
 import authApi from "../../utils/api";
+import moment from "moment";
 
 const controller = new AbortController();
 const initialState = {
@@ -9,6 +10,7 @@ const initialState = {
   loademployeedetails: {},
   error: null,
   abortController: null,
+  historyEmployee: [],
 };
 
 // get all employees
@@ -160,12 +162,55 @@ export const LoadSingleEmployee = (employeeID) => async (dispatch) => {
     );
   }
 };
+
+export const getEmployeehistory = (employeeID) => async (dispatch) => {
+  try {
+    dispatch(
+      toggleLoading({
+        abortController: controller,
+      })
+    );
+    const response = await authApi.get(`employeehistroy/${employeeID}`, {
+      signal: controller.signal,
+    });
+    if (response.status === 200) {
+      const formattedData = response.data.data.map((itm) => {
+        if (itm.joiningDate) {
+          itm.joiningDate = moment(itm.joiningDate).format("LLL");
+        }
+        if (itm.removeingDate) {
+          itm.removeingDate = moment(itm.removeingDate).format("LLL");
+        }else{
+          itm.removeingDate == null 
+        }
+        return itm; // Return the modified object
+      });
+
+      dispatch(setHistoryEmployees(formattedData));
+    
+    }
+  } catch (error) {
+    ErrorToast(error?.message);
+
+    dispatch(setError(error?.message));
+  } finally {
+    dispatch(
+      toggleLoading({
+        abortController: null,
+      })
+    );
+  }
+};
+
 export const employeeSlice = createSlice({
   initialState: initialState,
   name: "employee",
   reducers: {
     setEmployees: (state, action) => {
       state.employees = action.payload;
+    },
+    setHistoryEmployees: (state, action) => {
+      state.historyEmployee = action.payload;
     },
     toggleLoading: (state, action) => {
       state.loading = action.payload.loading;
@@ -180,7 +225,12 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { setEmployees, toggleLoading, setError, setLoadEmployeeDetails } =
-  employeeSlice.actions;
+export const {
+  setEmployees,
+  toggleLoading,
+  setError,
+  setLoadEmployeeDetails,
+  setHistoryEmployees,
+} = employeeSlice.actions;
 
 export default employeeSlice.reducer;

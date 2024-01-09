@@ -6,7 +6,7 @@ import {
   useGlobalFilter,
 } from "react-table";
 
-export const DataTable = ({ columns, data }) => {
+export const DataTable = ({ columns, data , showSearch = true }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,7 +28,7 @@ export const DataTable = ({ columns, data }) => {
 
   return (
     <div className="overflow-x-auto">
-      <div className="mb-4 flex items-center justify-end mr-3 relative">
+      {showSearch &&  <div className="mb-4 flex items-center justify-end mr-3 relative">
         <div className="relative flex items-center">
           <input
             type="text"
@@ -44,7 +44,8 @@ export const DataTable = ({ columns, data }) => {
             />
           )}
         </div>
-      </div>
+      </div> }
+     
 
       {showNoRecords ? (
         <div className="text-center text-gray-700 py-8">No records found</div>
@@ -107,6 +108,7 @@ export const DataTable = ({ columns, data }) => {
                         className="p-3 border-b"
                       >
                         {cell.render("Cell")}
+                       
                       </td>
                     ))}
                   </tr>
@@ -116,7 +118,7 @@ export const DataTable = ({ columns, data }) => {
           </table>
 
           {/* Pagination */}
-          <div className="flex justify-between items-center mt-4">
+          {showSearch &&  <div className="flex justify-between items-center mt-4">
             <div className="text-sm text-gray-700 flex items-center">
               Page{" "}
               <strong>
@@ -162,7 +164,8 @@ export const DataTable = ({ columns, data }) => {
                 Next
               </button>
             </div>
-          </div>
+          </div>}
+         
         </>
       )}
     </div>

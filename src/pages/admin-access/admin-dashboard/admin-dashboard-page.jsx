@@ -31,11 +31,11 @@ const AdminDashboardPage = () => {
     let srdeveloperCount = 0;
   
     itm.resources.forEach((o) => {
-      if (o.role_type === 'projectmanager') {
+      if (o?.role_type === 'projectmanager') {
         projectManagerCount += 1;
-      } else if (o.role_type === 'teamLeader' || o.role_type === 'Team Leader' ){
+      } else if (o?.role_type === 'teamLeader' || o?.role_type === 'Team Leader' ){
         teamLeaderCount += 1;
-      } else if (o.role_type === 'srdeveloper') {
+      } else if (o?.role_type === 'srdeveloper') {
         srdeveloperCount += 1;
       }
     });
@@ -54,7 +54,7 @@ const AdminDashboardPage = () => {
   
     const key = criteria[0];
   
-    arr.sort((a, b) => {
+    arr?.sort((a, b) => {
       if (a[key] < b[key]) {
         return 1;
       } else if (a[key] > b[key]) {

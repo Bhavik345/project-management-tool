@@ -169,10 +169,12 @@ export default function ReSourceManageMentPage() {
 
                           <div className=" w-1/3">
                             <p>
-                              <span className="text-base tracking-widest font-bold">
+                              <span className="text-base tracking-widest font-bold ">
                                 Description :-
                               </span>
+                              <span className="break-words">
                               {tab?.project_description}
+                              </span>
                             </p>
                           </div>
                         </div>
