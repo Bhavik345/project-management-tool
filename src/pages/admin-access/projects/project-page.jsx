@@ -98,7 +98,11 @@ const ProjectPage = () => {
       { Header: "Description", accessor: "project_description" },
       { Header: "ClientName", accessor: "client_name" },
       {
-        Header: "Actions",
+        Header: (
+          <div style={{ width: '87px' }}> 
+            Actions
+          </div>
+        ),
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="flex space-x-3">

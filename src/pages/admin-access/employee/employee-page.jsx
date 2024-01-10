@@ -105,10 +105,15 @@ const EmployeePage = () => {
       { Header: "Phone Number", accessor: "phoneNumber" },
       // { Header: "Password", accessor: "password" },
       {
-        Header: "Actions",
+        Header:(
+          <div style={{ width: '137px' }}>
+            Actions
+          </div>
+        ),
         accessor: "actions",
+
         Cell: ({ row }) => (
-          <div className="flex space-x-3">
+          <div className="flex space-x-3 ">
             <button
               onClick={() => openEditEmployeeModal(row?.original)}
               className="bg-blue-500 text-white px-2.5 py-2 rounded-full hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
