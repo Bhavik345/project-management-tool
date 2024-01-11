@@ -27,11 +27,10 @@ export const AddOrEditProjectModal = ({
       projectDescription: "",
       projectName: "",
       clientName: "",
+      billableResource: "",
     },
   });
   const { loadprojectdata } = useSelector((state) => state?.root?.project);
-
-  
 
   useEffect(() => {
     if (!isEmptyObject(loadprojectdata) && mode === "edit") {
@@ -41,12 +40,14 @@ export const AddOrEditProjectModal = ({
         projectDescription: project_description || "",
         projectName: project_name || "",
         clientName: client_name || "",
+        // billableResource: billableResourceNumber || "", is to added
       });
     } else {
       reset({
         projectDescription: "",
         projectName: "",
         clientName: "",
+        billableResource: "",
       });
     }
   }, [loadprojectdata, reset, mode]);
@@ -99,6 +100,8 @@ export const AddOrEditProjectModal = ({
                     id="projectName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
                     disabled={isSubmitting}
+                    placeholder="Project Name"
+
                   />
                 )}
               />
@@ -123,6 +126,8 @@ export const AddOrEditProjectModal = ({
                     id="clientName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
                     disabled={isSubmitting}
+                    placeholder="Enter Name Here"
+
                   />
                 )}
               />
@@ -147,6 +152,7 @@ export const AddOrEditProjectModal = ({
                     id="projectDescription"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
                     disabled={isSubmitting}
+                    placeholder="Description"
                   />
                 )}
               />
@@ -154,6 +160,37 @@ export const AddOrEditProjectModal = ({
                 {errors.projectDescription?.message}
               </span>
             </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="billableResource"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Number of Billable Resource
+              </label>
+              <Controller
+                name="billableResource"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    type="tel"
+                    id="billableResource"
+                    className="mt-1 p-2 border border-gray-300 w-full rounded-md"
+                    disabled={isSubmitting}
+                    maxLength="2"
+                    placeholder="Enter upto 2 digits number"
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, "");
+                   }}
+                  />
+                )}
+              />
+              <span className="text-red-500 text-sm">
+                {errors.billableResource?.message}
+              </span>
+            </div>
+
             <div className="flex justify-end">
               <button
                 type="submit"

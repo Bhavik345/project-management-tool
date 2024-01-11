@@ -10,6 +10,7 @@ const initialState = {
   loadresourcedata: {},
   abortController: null,
   isprojectupdate: false,
+  resourceStatus:[]
 };
 const controller = new AbortController();
 
@@ -26,6 +27,28 @@ export const getAllResources = () => async (dispatch) => {
     });
     if (response.status === 200) {
       dispatch(setResources(response.data?.data));
+    }
+  } catch (error) {
+    ErrorToast(error?.message);
+    dispatch(setError(error?.message));
+  } finally {
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: null,
+      })
+    );
+  }
+};
+
+export const getResourceStatus = () => async (dispatch) => {
+  try {
+    
+    const response = await authApi.get(`resource/status`, {
+      signal: controller.signal,
+    });
+    if (response.status === 200) {
+      dispatch(setResourcesStatus(response.data?.data));
     }
   } catch (error) {
     ErrorToast(error?.message);
@@ -73,6 +96,7 @@ export const AddResource = (data) => async (dispatch) => {
   }
 };
 
+
 export const DeleteResourceEmployee = (payload) => async (dispatch) => {
   try {
     dispatch(
@@ -107,6 +131,9 @@ export const ResourceSlice = createSlice({
     setResources: (state, action) => {
       state.resources = action.payload;
     },
+    setResourcesStatus: (state, action) => {
+      state.resourceStatus = action.payload;
+    },
     setError: (state, action) => {
       state.error = action.payload;
     },
@@ -126,6 +153,7 @@ export const ResourceSlice = createSlice({
 export const {
   setError,
   setResources,
+  setResourcesStatus,
   toggleLoading,
   setLoadResourceData,
   setIsProjectUpdate,

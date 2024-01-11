@@ -6,7 +6,7 @@ import {
   useGlobalFilter,
 } from "react-table";
 
-export const DataTable = ({ columns, data , showSearch = true }) => {
+export const DataTable = ({ columns, data , showSearch = true ,hideAction = true }) => {
   const {
     getTableProps,
     getTableBodyProps,
@@ -118,7 +118,7 @@ export const DataTable = ({ columns, data , showSearch = true }) => {
           </table>
 
           {/* Pagination */}
-          {showSearch &&  <div className="flex justify-between items-center mt-4">
+          {showSearch && hideAction && <div className="flex justify-between items-center mt-4">
             <div className="text-sm text-gray-700 flex items-center">
               Page{" "}
               <strong>

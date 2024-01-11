@@ -1,4 +1,5 @@
 import {
+  FlagIcon,
   FolderDot,
   KanbanIcon,
   Layout,
@@ -29,6 +30,11 @@ const AdminRoutes = [
     icon: KanbanIcon,
     label: "Resources",
     href: "/admin/resource-management",
+  },
+  {
+    icon: FlagIcon,
+    label: "Report",
+    href: "/admin/reports",
   },
 ];
 

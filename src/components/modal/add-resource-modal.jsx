@@ -7,6 +7,7 @@ import { ResourceSchema } from "../../validations/resource-validation-schema";
 import {
   availabilityList,
   roleList,
+  // status_resource,
 } from "../../utils/resource-addAssigneModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -14,6 +15,7 @@ import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
 import {
   AddResource,
   setIsProjectUpdate,
+  getResourceStatus,
 } from "../../modules/resource/resource-slice";
 import { setProjectTab } from "../../modules/projects/project-slice";
 
@@ -27,7 +29,7 @@ export const AddResources = ({
 }) => {
   const dispatch = useDispatch();
   const { employees } = useSelector((state) => state?.root?.employee);
-  const { isprojectupdate } = useSelector((state) => state?.root?.resource);
+  const { isprojectupdate, resourceStatus } = useSelector((state) => state?.root?.resource);
   const { projecttab, projects } = useSelector((state) => state?.root?.project);
   useEffect(() => {
     return () => {
@@ -43,7 +45,10 @@ export const AddResources = ({
     }
   }, [dispatch, isprojectupdate, projectId, projects]);
 
-
+  useEffect(() => {
+    dispatch(getResourceStatus());
+  }, []);
+  
   const employeeIdsInProject = projecttab?.resources?.map(
     (resource) => resource.employee.id
   );
@@ -75,6 +80,7 @@ export const AddResources = ({
       availability: null,
       role: null,
       employee: null,
+      status: null,
     },
   });
 
@@ -85,6 +91,7 @@ export const AddResources = ({
       projectId: projectId,
       availability: values.availability,
       role_type: values.role,
+      resource_status_id:values.status
     };
 
     try {
@@ -190,6 +197,33 @@ export const AddResources = ({
                         {errors.employee.message}
                       </p>
                     )}
+                </div>
+              )}
+            />
+
+            <Controller
+              name="status"
+              control={control}
+              render={({ field }) => (
+                <div className="mb-5">
+                  <Select
+                    {...field}
+                    options={resourceStatus.map((o)=>{
+                      let statusData = {
+                        label: o.resources_Name,
+                        value: o.id
+                      }
+                      return statusData
+                    })}
+                    value={field.values}
+                    placeholder="Status"
+                    onChange={(selectedOption) =>
+                      onChangeHandle(selectedOption, "status")
+                    }
+                  />
+                  {(!field.value || field.value === null) && errors.status && (
+                    <p className="text-red-500 mt-1">{errors.status.message}</p>
+                  )}
                 </div>
               )}
             />

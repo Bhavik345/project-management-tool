@@ -87,6 +87,10 @@ export default function ReSourceManageMentPage() {
     setID(null);
   };
 
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  
   return (
     <>
       {loading || resourceLoading ? (
@@ -189,7 +193,7 @@ export default function ReSourceManageMentPage() {
                                 key={index}
                                 className="w-5/12 py-2 px-4 flex justify-between items-center bg-blue-200 m-2 rounded-[10px]"
                               >
-                                <div>{item?.employee?.name}</div>
+                                <p>{item?.employee?.name} -  ({capitalizeFirstLetter(item?.role_type)})</p>
                                 <div
                                   className="bg-red-500 text-white px-2.5 py-2 hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800 w-10 cursor-pointer rounded-[50%]"
                                   onClick={() => handleDelete(item)}

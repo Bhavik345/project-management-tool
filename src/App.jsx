@@ -20,6 +20,9 @@ const ProjectPage = lazy(() =>
 const ReSourceManageMentPage = lazy(() =>
   import("./pages/admin-access/resource/resource-management-page")
 );
+const ReportPage = lazy(() =>
+  import("./pages/admin-access/reports/ReportPage")
+);
 // profile page
 const ProfilePage = lazy(() =>
   import("./pages/employee-access/profile/profile-page")
@@ -46,6 +49,8 @@ function App() {
                 path="/admin/resource-management"
                 element={<ReSourceManageMentPage />}
               />
+              <Route path="/admin/reports" element={<ReportPage />} />
+
               {/* employee routes */}
               <Route path="/profile" element={<ProfilePage />} />
             </Route>

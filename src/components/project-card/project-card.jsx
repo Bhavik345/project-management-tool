@@ -2,7 +2,6 @@ const ProjectCard = ({ o }) => {
   // const employeeNames = o?.resources?.map(
   //   (resource) => resource?.employee?.name
   // );
-
   return (
     <div
       className="dashboard-card max-w-sm p-6 shadow-[-0.1rem_1.7rem_6.6rem_-3.2rem_rgba(0,0,0,0.5)] text-white border-[none] rounded-[0_30px_0_30px] transition-all"
@@ -26,8 +25,17 @@ const ProjectCard = ({ o }) => {
       </div>
           <div className="flex flex-wrap">
               {o?.resources.map((item, index) => (
-                  <div key={index} className="w-1/2 py-2 px-4">
-                    - {item?.employee?.name}
+                  <div key={index} className="w-1/2 py-2 px-4 flex items-center">
+                    {/* <span className="w-[10px] h-[10px] rounded-full bg-black inline-block mr-2"></span> */}
+                    <span
+                      className={`w-[10px] h-[10px] rounded-full inline-block mr-2 ${
+                        item.role_type === 'teamLeader' ? 'bg-red-500' : item.role_type === 'srdeveloper' ? 'bg-blue-500'
+                        : 'bg-green-500'}`}>
+                    </span>
+                    <p>
+                     {item?.employee?.name} ({item?.role_type == 'teamLeader'? 'TL' :item?.role_type == 'srdeveloper'? 'D' : 'PM' })
+                    </p>
+                   
                  </div>
                 ))}
            </div>

@@ -4,13 +4,15 @@ import projectReducer from "./src/modules/projects/project-slice";
 import employeeReducer from "./src/modules/employee/employee-slice";
 import dashboardReducer from "./src/modules/dashboard/dashboard-slice";
 import resourceReducer from "./src/modules/resource/resource-slice"
+import reportReducer from "./src/modules/report/report-Slice";
 
 const appReducer = combineReducers({
   auth: authReducer,
   project: projectReducer,
   employee: employeeReducer,
   dashboard: dashboardReducer,
-  resource: resourceReducer
+  resource: resourceReducer,
+  reports: reportReducer
 });
 
 const rootReducer = (state, action) => {
