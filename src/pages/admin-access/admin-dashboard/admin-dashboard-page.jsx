@@ -78,6 +78,11 @@ const AdminDashboardPage = () => {
     <div className="flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex justify-between items-center">
+                        <p className=" bg-[#66ccff] mr-2 mt-6 ml-5 rounded p-2">Billable</p>
+                        <p className=" bg-[#ff9933] mr-2 mt-6 rounded p-2">Non - Billable</p>
+                        <p className=" bg-[#99ff33]  mt-6 mr-4 rounded p-2">In - Help</p>
+                      </div>
         {/* <div className="relative flex items-center mr-4">
           <input
             type="text"

@@ -8,16 +8,16 @@ body,
   height: 100%;
 }
 .dashboard-card:nth-child(1n) {
-  background: linear-gradient(to bottom, #ff73b9, #ff40a1);
+  background: linear-gradient(to top, #ecebecd7, #dfdddfd7);
 }
 .dashboard-card:nth-child(2n) {
-  background: linear-gradient(to bottom, #47c2d7, #279eb2);
+  background: linear-gradient(to bottom, #ecebecd7, #dfdddfd7);
 }
 .dashboard-card:nth-child(3n) {
-  background: linear-gradient(to bottom, #fb9b88, #f86647);
+  background: linear-gradient(to bottom, #ecebecd7, #dfdddfd7);
 }
 .dashboard-card:nth-child(4n) {
-  background: linear-gradient(to bottom, #ffd43d, #d9aa07);
+  background: linear-gradient(to bottom, #ecebecd7, #dfdddfd7);
 }
 .recharts-legend-wrapper{
   /* display: none; */

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { X } from "lucide-react";
@@ -16,11 +16,13 @@ export const AddOrEditProjectModal = ({
   onSave,
 }) => {
   const dispatch = useDispatch();
+  // const [isChecked, setIsChecked] = useState(false);
   const {
     handleSubmit,
     control,
     formState: { isSubmitting, isValid, errors },
     reset,
+    setValue
   } = useForm({
     resolver: yupResolver(projectSchema),
     defaultValues: {
@@ -28,19 +30,27 @@ export const AddOrEditProjectModal = ({
       projectName: "",
       clientName: "",
       billableResource: "",
+      Trackercheckbox: false,
     },
   });
   const { loadprojectdata } = useSelector((state) => state?.root?.project);
-
+  console.log('--',loadprojectdata);
   useEffect(() => {
     if (!isEmptyObject(loadprojectdata) && mode === "edit") {
-      const { project_description, project_name, client_name } =
-        loadprojectdata;
+      const {
+        project_description,
+        project_name,
+        client_name,
+        No_of_resource_type,
+        tracker,
+      } = loadprojectdata;
+
       reset({
         projectDescription: project_description || "",
         projectName: project_name || "",
         clientName: client_name || "",
-        // billableResource: billableResourceNumber || "", is to added
+        billableResource: No_of_resource_type || "",
+        Trackercheckbox: tracker ||  ""
       });
     } else {
       reset({
@@ -48,19 +58,24 @@ export const AddOrEditProjectModal = ({
         projectName: "",
         clientName: "",
         billableResource: "",
+        Trackercheckbox: false,
       });
     }
   }, [loadprojectdata, reset, mode]);
+
+
   const handleSave = (data) => {
     onSave(data);
     closeAddProjectModal();
   };
+
+
   const closeAddProjectModal = () => {
     reset();
     onClose();
     dispatch(setLoadProjectData({}));
   };
-
+ 
   return (
     <Modal
       isOpen={isOpen}
@@ -99,9 +114,8 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="projectName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     placeholder="Project Name"
-
                   />
                 )}
               />
@@ -125,9 +139,8 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="clientName"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     placeholder="Enter Name Here"
-
                   />
                 )}
               />
@@ -151,7 +164,7 @@ export const AddOrEditProjectModal = ({
                     type="text"
                     id="projectDescription"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     placeholder="Description"
                   />
                 )}
@@ -177,12 +190,12 @@ export const AddOrEditProjectModal = ({
                     type="tel"
                     id="billableResource"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                     maxLength="2"
                     placeholder="Enter upto 2 digits number"
                     onInput={(e) => {
                       e.target.value = e.target.value.replace(/\D/g, "");
-                   }}
+                    }}
                   />
                 )}
               />
@@ -191,13 +204,42 @@ export const AddOrEditProjectModal = ({
               </span>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-between items-center">
+
+              <div>
+            
+                 <Controller
+                name="Trackercheckbox"
+                control={control}
+                render={({ field }) => (
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="Trackercheckbox"
+                      onChange={() => {
+                        setValue('Trackercheckbox', !field.value); 
+                        console.log(!field.value);
+                      }}
+                    />
+                    <label
+                      htmlFor="Trackercheckbox"
+                      className="ms-2 text-sm font-bold text-gray-900 dark:text-gray-300"
+                    >
+                      Tracker
+                    </label>
+                  </div>
+                )}
+              />
+
+              </div>
+
+
               <button
                 type="submit"
                 className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
-                  (!isValid || isSubmitting) && "opacity-50 cursor-not-allowed"
+                  (!isValid || isSubmitting) && ""
                 }`}
-                disabled={!isValid || isSubmitting}
+                // disabled={!isValid || isSubmitting}
               >
                 {mode === "add" ? "Add Project" : "Save Changes"}
               </button>

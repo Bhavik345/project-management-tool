@@ -6,12 +6,10 @@ import { X } from "lucide-react";
 import { ResourceSchema } from "../../validations/resource-validation-schema";
 import {
   availabilityList,
-  roleList,
-  // status_resource,
 } from "../../utils/resource-addAssigneModal";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { abortGetAllEmployees } from "../../modules/employee/employee-slice";
+import { useEffect, useState } from "react";
+import { abortGetAllEmployees, getEmployeeRoles } from "../../modules/employee/employee-slice";
 import {
   AddResource,
   setIsProjectUpdate,
@@ -26,10 +24,14 @@ export const AddResources = ({
   onSave,
   projectId,
   projectTab,
+  editData
 }) => {
   const dispatch = useDispatch();
-  const { employees } = useSelector((state) => state?.root?.employee);
-  const { isprojectupdate, resourceStatus } = useSelector((state) => state?.root?.resource);
+  const [showHours , setShowHours] = useState(false);
+  const { employees, employeeRole } = useSelector((state) => state?.root?.employee);
+  const { isprojectupdate, resourceStatus } = useSelector(
+    (state) => state?.root?.resource
+  );
   const { projecttab, projects } = useSelector((state) => state?.root?.project);
   useEffect(() => {
     return () => {
@@ -47,8 +49,18 @@ export const AddResources = ({
 
   useEffect(() => {
     dispatch(getResourceStatus());
+    dispatch(getEmployeeRoles())
+    // dispatch(UpdateResource())
   }, []);
-  
+
+  useEffect(()=>{
+    if(mode == 'edit' ){
+      
+    }else{
+
+    }
+  },[])
+
   const employeeIdsInProject = projecttab?.resources?.map(
     (resource) => resource.employee.id
   );
@@ -57,6 +69,12 @@ export const AddResources = ({
   const employeesNotInProject = employees?.filter(
     (employee) => !employeeIdsInProject?.includes(employee?.id)
   );
+
+  const roleList =  employeeRole.map((o) => ({
+    label: o?.empolyee_role,
+    value: o?.id,
+  }))
+
 
   const employeeList =
     employeesNotInProject && employeesNotInProject?.length > 0
@@ -76,13 +94,23 @@ export const AddResources = ({
     reset,
   } = useForm({
     resolver: yupResolver(ResourceSchema),
-    defaultValues: {
+    defaultValues: mode == 'edit'?
+    {
+    availability: editData.availability,
+      hours: editData.hours,
+      role: editData.role,
+      employee: editData.employee,
+      status: editData.status,
+    } :
+     {
       availability: null,
+      hours: null,
       role: null,
       employee: null,
       status: null,
     },
   });
+  
 
   const onSubmit = async () => {
     let values = getValues();
@@ -90,9 +118,11 @@ export const AddResources = ({
       employeeId: values.employee,
       projectId: projectId,
       availability: values.availability,
+      hours: values.hours,
       role_type: values.role,
-      resource_status_id:values.status
+      resource_status_id: values.status,
     };
+
 
     try {
       dispatch(AddResource(resourceData));
@@ -109,8 +139,25 @@ export const AddResources = ({
     onClose();
   };
 
+  const onChangeHandleInput = (e,nameSelect) => {
+    setValue(nameSelect,e)
+  }
+
   const onChangeHandle = (selectedOption, nameSelect) => {
-    setValue(nameSelect, selectedOption.value);
+    // setValue(nameSelect, selectedOption.value);
+    if(nameSelect === 'role' ){
+      setValue(nameSelect, selectedOption.label === "Project Manager" ? "projectmanager" : selectedOption.label == "Developer"? 'srdeveloper' : selectedOption.label === "Team-Leader" ? "teamLeader" : "" );
+    }else{
+      setValue(nameSelect, selectedOption.value);
+    }
+
+    if(nameSelect==='availability'){
+      if(selectedOption.value == 'partTime'){
+        setShowHours(true)
+      }else{
+        setShowHours(false)
+      }
+    } 
   };
   return (
     <Modal
@@ -123,7 +170,7 @@ export const AddResources = ({
       <div className="flex items-center justify-center min-h-screen p-4">
         <div className="bg-white rounded-lg shadow-xl ring-2 ring-offset-2 ring-gray-300  w-full max-w-md p-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Assign Projects</h2>
+            <h2 className="text-xl font-bold">{mode === "add" ? "Assign Projects" : "Edit Assign Projects"}</h2>
             <button
               onClick={closeAddResourceModal}
               className="text-gray-500 hover:text-gray-700"
@@ -155,6 +202,36 @@ export const AddResources = ({
                 </div>
               )}
             />
+            {
+              showHours ? 
+              <Controller
+              name="hours"
+              control={control}
+              render={({ field }) => (
+                <div className="mb-5 w-full">
+                  <input
+                  className="p-1"
+                    {...field}
+                    type="tel" // Specify the input type as number
+                    placeholder="Hours"
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                      onChangeHandleInput(e.target.value, "hours");
+                    }}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, "");
+                   }}
+                   maxLength={2}
+                  />
+                  {(!field.value || field.value === null) && errors.hours && (
+                    <p className="text-red-500 mt-1">{errors.hours.message}</p>
+                  )}
+                </div>
+              )}
+            /> : null
+
+            }
+           
 
             <Controller
               name="role"
@@ -168,6 +245,7 @@ export const AddResources = ({
                     placeholder="Role"
                     onChange={(selectedOption) =>
                       onChangeHandle(selectedOption, "role")
+
                     }
                   />
                   {(!field.value || field.value === null) && errors.role && (
@@ -208,12 +286,12 @@ export const AddResources = ({
                 <div className="mb-5">
                   <Select
                     {...field}
-                    options={resourceStatus.map((o)=>{
+                    options={resourceStatus.map((o) => {
                       let statusData = {
                         label: o.resources_Name,
-                        value: o.id
-                      }
-                      return statusData
+                        value: o.id,
+                      };
+                      return statusData;
                     })}
                     value={field.values}
                     placeholder="Status"

@@ -96,6 +96,33 @@ export const AddResource = (data) => async (dispatch) => {
   }
 };
 
+export const UpdateResource = (data, resourceId) => async (dispatch) => {
+  try {
+    dispatch(
+      toggleLoading({
+        loading: true,
+        abortController: controller,
+      })
+    );
+    const response = await authApi.patch(`resource/${resourceId}`, data);
+    if (response.status === 200) {
+      SuccessToast(response.data?.message);
+      dispatch(getAllResources());
+    }
+  } catch (error) {
+    ErrorToast(error?.response?.data?.message);
+
+    dispatch(setError(error?.message));
+  } finally {
+    dispatch(
+      toggleLoading({
+        loading: false,
+        abortController: controller,
+      })
+    );
+  }
+};
+
 
 export const DeleteResourceEmployee = (payload) => async (dispatch) => {
   try {

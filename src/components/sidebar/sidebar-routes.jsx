@@ -13,7 +13,7 @@ import { role } from "../../utils/route-access";
 const AdminRoutes = [
   {
     icon: Layout,
-    label: "Dashboard",
+    label: "Resource Dashboard",
     href: "/",
   },
   {

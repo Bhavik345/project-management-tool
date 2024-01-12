@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { DataTable } from "../../../components/tables/data-table";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Edit, History, Plus, Trash } from "lucide-react";
 import { AddOrEditProjectModal } from "../../../components/modal/add-edit-projectmodal";
 import { DeleteConfirmationModal } from "../../../components/modal/delete-confirmation-modal";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,12 +15,14 @@ import {
 } from "../../../modules/projects/project-slice";
 import { ErrorToast } from "../../../utils/toast-util";
 import { Loader } from "../../../components/loader/loader";
+import HistoryProject from "../../../components/modal/historyProject";
 
 const ProjectPage = () => {
   const [isAddProjectModalOpen, setIsAddProjectModalOpen] = useState(false);
   const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
     useState(false);
   const [Id, setID] = useState(null);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const [modalMode, setModalMode] = useState("add");
   const dispatch = useDispatch();
   const { loading, projects } = useSelector((state) => state?.root?.project);
@@ -57,7 +59,10 @@ const ProjectPage = () => {
       project_description: data?.projectDescription,
       project_name: data?.projectName,
       client_name: data?.clientName,
+      No_of_resource_type: data?.billableResource,
+      tracker: data?.Trackercheckbox,
     };
+    console.log("---/", updateddata);
     try {
       if (modalMode === "add") {
         dispatch(AddProject(updateddata));
@@ -82,14 +87,24 @@ const ProjectPage = () => {
     setID(null);
     setIsDeleteConfirmationModalOpen(false);
   };
+  const handleHistory = (row) => {
+    if (row) {
+      setID(row?.id);
+      setHistoryOpen(true);
+    }
+  };
 
   const handleCancelDelete = () => {
     setIsDeleteConfirmationModalOpen(false);
+    setHistoryOpen(false);
+    setID(null);
   };
 
   const data = useMemo(() => {
     return projects && projects.length > 0 ? projects : [];
   }, [projects]);
+
+  
 
   const columns = useMemo(
     () => [
@@ -98,11 +113,7 @@ const ProjectPage = () => {
       { Header: "Description", accessor: "project_description" },
       { Header: "ClientName", accessor: "client_name" },
       {
-        Header: (
-          <div style={{ width: '87px' }}> 
-            Actions
-          </div>
-        ),
+        Header: <div style={{ width: "87px" }}>Actions</div>,
         accessor: "actions",
         Cell: ({ row }) => (
           <div className="flex space-x-3">
@@ -117,6 +128,12 @@ const ProjectPage = () => {
               className="bg-red-500 text-white px-2.5 py-2 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800"
             >
               <Trash className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => handleHistory(row?.original)}
+              className="bg-green-500 text-white px-2.5 py-2 rounded-full hover:bg-green-600 focus:outline-none focus:shadow-outline-green active:bg-green-800"
+            >
+              <History className="w-5 h-5" />
             </button>
           </div>
         ),
@@ -158,6 +175,15 @@ const ProjectPage = () => {
             onClose={handleCancelDelete}
             onDelete={handleConfirmDelete}
           />
+
+          {historyOpen && (
+            <HistoryProject
+              ID={Id}
+              dataa={data}
+              isOpen={historyOpen}
+              onClose={handleCancelDelete}
+            />
+          )}
         </div>
       )}
     </>

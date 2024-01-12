@@ -102,7 +102,7 @@ export const AddOrEditEmployeeModal = ({
                     type="text"
                     id="employeename"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                   />
                 )}
               />
@@ -126,7 +126,7 @@ export const AddOrEditEmployeeModal = ({
                     type="email"
                     id="employeeemail"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                   />
                 )}
               />
@@ -150,7 +150,11 @@ export const AddOrEditEmployeeModal = ({
                     type="tel"
                     id="employeenumber"
                     className="mt-1 p-2 border border-gray-300 w-full rounded-md"
-                    disabled={isSubmitting}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, "");
+                   }}
+                   maxLength={10}
+                    // disabled={isSubmitting}
                   />
                 )}
               />
@@ -177,7 +181,7 @@ export const AddOrEditEmployeeModal = ({
                         type={showPassword ? "text" : "password"}
                         id="employeepassword"
                         className="mt-1 p-2 border border-gray-300 w-full rounded-md pr-10"
-                        disabled={isSubmitting}
+                        // disabled={isSubmitting}
                       />
                     )}
                   />
@@ -204,9 +208,9 @@ export const AddOrEditEmployeeModal = ({
               <button
                 type="submit"
                 className={`bg-blue-500 text-white px-4 py-2 rounded-md ${
-                  (!isValid || isSubmitting) && "opacity-50 cursor-not-allowed"
+                  (!isValid || isSubmitting) && ""
                 }`}
-                disabled={!isValid || isSubmitting}
+                // disabled={!isValid || isSubmitting}
               >
                 {mode === "add" ? "Add Employee" : "Save Changes"}
               </button>

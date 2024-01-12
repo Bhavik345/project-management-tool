@@ -9,6 +9,7 @@ const initialState = {
   loadprojectdata: {},
   abortController: null,
   projecttab: {},
+  historyProject:[]
 };
 
 const controller = new AbortController();
@@ -163,12 +164,43 @@ export const LoadSingleProject = (projectId) => async (dispatch) => {
   }
 };
 
+export const getProjectHistory = (employeeID) => async (dispatch) => {
+  try {
+    dispatch(
+      toggleLoading({
+        abortController: controller,
+      })
+    );
+    const response = await authApi.get(`project/history/${employeeID}`, {
+      signal: controller.signal,
+    });
+    if (response.status === 200) {
+      dispatch(setProjectHistory(response?.data?.data));
+    
+    }
+  } catch (error) {
+    ErrorToast(error?.message);
+
+    dispatch(setError(error?.message));
+  } finally {
+    dispatch(
+      toggleLoading({
+        abortController: null,
+      })
+    );
+  }
+};
+
+
 export const projectSlice = createSlice({
   initialState: initialState,
   name: "projects",
   reducers: {
     setProjects: (state, action) => {
       state.projects = action.payload;
+    },
+    setProjectHistory: (state, action) => {
+      state.historyProject = action.payload;
     },
     setError: (state, action) => {
       state.error = action.payload;
@@ -189,6 +221,7 @@ export const projectSlice = createSlice({
 export const {
   setError,
   setProjects,
+  setProjectHistory,
   toggleLoading,
   setLoadProjectData,
   setProjectTab,

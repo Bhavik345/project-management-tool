@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   abortController: null,
   historyEmployee: [],
+  employeeRole:[]
 };
 
 // get all employees
@@ -202,6 +203,34 @@ export const getEmployeehistory = (employeeID) => async (dispatch) => {
   }
 };
 
+export const getEmployeeRoles = () => async (dispatch) => {
+  try {
+    dispatch(
+      toggleLoading({
+        abortController: controller,
+      })
+    );
+    const response = await authApi.get(`employeeroles`, {
+      signal: controller.signal,
+    });
+    if (response.status === 200 || response.status === 201  ) {
+
+      dispatch(setEmployeeRole(response?.data?.data));
+    
+    }
+  } catch (error) {
+    ErrorToast(error?.message);
+
+    dispatch(setError(error?.message));
+  } finally {
+    dispatch(
+      toggleLoading({
+        abortController: null,
+      })
+    );
+  }
+};
+
 export const employeeSlice = createSlice({
   initialState: initialState,
   name: "employee",
@@ -211,6 +240,9 @@ export const employeeSlice = createSlice({
     },
     setHistoryEmployees: (state, action) => {
       state.historyEmployee = action.payload;
+    },
+    setEmployeeRole: (state, action) => {
+      state.employeeRole = action.payload;
     },
     toggleLoading: (state, action) => {
       state.loading = action.payload.loading;
@@ -231,6 +263,7 @@ export const {
   setError,
   setLoadEmployeeDetails,
   setHistoryEmployees,
+  setEmployeeRole,
 } = employeeSlice.actions;
 
 export default employeeSlice.reducer;
