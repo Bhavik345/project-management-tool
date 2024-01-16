@@ -98,12 +98,12 @@ export const AddResource = (data) => async (dispatch) => {
 
 export const UpdateResource = (data, resourceId) => async (dispatch) => {
   try {
-    dispatch(
-      toggleLoading({
-        loading: true,
-        abortController: controller,
-      })
-    );
+    // dispatch(
+    //   toggleLoading({
+    //     loading: true,
+    //     abortController: controller,
+    //   })
+    // );
     const response = await authApi.patch(`resource/${resourceId}`, data);
     if (response.status === 200) {
       SuccessToast(response.data?.message);

@@ -111,6 +111,7 @@ export default function ReSourceManageMentPage() {
     setIsAddResourceModalOpen(true);
     setModalMode('edit')
     setEditData(item)
+    // console.log('--',item);
   }
 
   return (

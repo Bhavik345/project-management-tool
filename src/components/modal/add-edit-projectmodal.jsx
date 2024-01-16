@@ -34,7 +34,6 @@ export const AddOrEditProjectModal = ({
     },
   });
   const { loadprojectdata } = useSelector((state) => state?.root?.project);
-  console.log('--',loadprojectdata);
   useEffect(() => {
     if (!isEmptyObject(loadprojectdata) && mode === "edit") {
       const {
